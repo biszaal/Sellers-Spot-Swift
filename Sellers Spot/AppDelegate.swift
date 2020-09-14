@@ -5,17 +5,60 @@
 //  Created by Bishal Aryal on 20/9/10.
 //  Copyright © 2020 Bishal Aryal. All rights reserved.
 //
-
 import UIKit
+import Firebase
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
+{
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        FirebaseApp.configure()
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
         return true
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+ 
+      if let error = error {
+        
+        print(error.localizedDescription)
+        return
+      }
+
+      guard let authentication = user.authentication else { return }
+      let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                        accessToken: authentication.accessToken)
+        
+        Auth.auth().signIn(with: credential) { (res, err) in
+            
+            if err != nil{
+                
+                print((err?.localizedDescription)!)
+                return
+            }
+            
+            UserDefaults.standard.set(user.userID, forKey: "userId")
+            UserDefaults.standard.set(user.profile.name, forKey: "username")
+            UserDefaults.standard.set(user.profile.email, forKey: "userEmail")
+            if user.profile.hasImage{
+                let imageUrl = signIn.currentUser.profile.imageURL(withDimension: 120)!.absoluteString
+                UserDefaults.standard.set(imageUrl, forKey: "userImage")
+                print(" image url: ", imageUrl)
+            }
+            
+            UserDefaults.standard.set(true, forKey: "status")
+            NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
+        }
+        
+    }
+
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+
     }
 
     // MARK: UISceneSession Lifecycle

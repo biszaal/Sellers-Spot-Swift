@@ -2,15 +2,33 @@
 //  ContentView.swift
 //  Sellers Spot
 //
-//  Created by Bishal Aryal on 20/9/10.
-//  Copyright © 2020 Bishal Aryal. All rights reserved.
+//  Created by Bishal Aryal on 20/9/9.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
+        ZStack
+        {
+        TabView
+        {
+            HomeMain().tabItem {
+                Image(systemName: "house.fill")
+                Text("Home")
+            }
+            
+            MessagesMain().tabItem {
+                Image(systemName: "message.fill")
+                Text("Messages")
+            }
+            
+            AccountMain().tabItem {
+                Image(systemName: "person.fill")
+                Text("Account")
+            }
+        }
+    }
     }
 }
 
