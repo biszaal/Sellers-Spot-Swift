@@ -26,12 +26,16 @@
 		6121F14A250A82840062503C /* MessagesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6121F141250A82840062503C /* MessagesListView.swift */; };
 		6121F14C250A87360062503C /* ProductDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6121F14B250A87360062503C /* ProductDetails.swift */; };
 		6121F14E250AA9F10062503C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6121F14D250AA9F10062503C /* GoogleService-Info.plist */; };
+		6127996F2515D2D300D1A8FA /* PostUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6127996E2515D2D300D1A8FA /* PostUserInfoView.swift */; };
 		61453BE9250B61B1003FFE5E /* MessagesObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61453BE8250B61B1003FFE5E /* MessagesObserver.swift */; };
 		61453BEC250B6200003FFE5E /* PostObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61453BEB250B6200003FFE5E /* PostObserver.swift */; };
+		6145F9A4251732E800D5784E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6145F9A3251732E800D5784E /* ImagePicker.swift */; };
 		615DE38E250BBEB800E59B24 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DE38D250BBEB800E59B24 /* SignInView.swift */; };
+		618663802511FCA0002BD453 /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186637F2511FCA0002BD453 /* NewPostView.swift */; };
 		618D272F250CF3AE0062B709 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D272E250CF3AE0062B709 /* ImageLoader.swift */; };
 		618D2731250CF9260062B709 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D2730250CF9260062B709 /* RemoteImage.swift */; };
 		61A84DBD250CB49600ED1441 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A84DBC250CB49600ED1441 /* UserDetailsView.swift */; };
+		61DBEBEE251A02A8008758A2 /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DBEBED251A02A8008758A2 /* PostImageView.swift */; };
 		6B71E1CCC4BFB6C13A7E8D2F /* Pods_Sellers_Spot_Sellers_SpotUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 902BD50FF1C2CF333BCD34B2 /* Pods_Sellers_Spot_Sellers_SpotUITests.framework */; };
 		C7A599E23DDE51B69DE6752D /* Pods_Sellers_SpotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF56E83C9BCCAF6EAF970A1 /* Pods_Sellers_SpotTests.framework */; };
 /* End PBXBuildFile section */
@@ -82,12 +86,16 @@
 		6121F141250A82840062503C /* MessagesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesListView.swift; sourceTree = "<group>"; };
 		6121F14B250A87360062503C /* ProductDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetails.swift; sourceTree = "<group>"; };
 		6121F14D250AA9F10062503C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6127996E2515D2D300D1A8FA /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
 		61453BE8250B61B1003FFE5E /* MessagesObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesObserver.swift; sourceTree = "<group>"; };
 		61453BEB250B6200003FFE5E /* PostObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostObserver.swift; sourceTree = "<group>"; };
+		6145F9A3251732E800D5784E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		615DE38D250BBEB800E59B24 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		6186637F2511FCA0002BD453 /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
 		618D272E250CF3AE0062B709 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		618D2730250CF9260062B709 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		61A84DBC250CB49600ED1441 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
+		61DBEBED251A02A8008758A2 /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
 		78A5CA2E6441118E6F77E3B7 /* Pods-Sellers SpotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sellers SpotTests.debug.xcconfig"; path = "Target Support Files/Pods-Sellers SpotTests/Pods-Sellers SpotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		902BD50FF1C2CF333BCD34B2 /* Pods_Sellers_Spot_Sellers_SpotUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sellers_Spot_Sellers_SpotUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B16F95FE0404E0CB19E13277 /* Pods_Sellers_Spot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sellers_Spot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,9 +131,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6106108D2511F4C400ED038E /* Remote Image Loader */ = {
+			isa = PBXGroup;
+			children = (
+				618D272E250CF3AE0062B709 /* ImageLoader.swift */,
+				618D2730250CF9260062B709 /* RemoteImage.swift */,
+			);
+			path = "Remote Image Loader";
+			sourceTree = "<group>";
+		};
 		6121F0F3250A82550062503C = {
 			isa = PBXGroup;
 			children = (
+				6106108D2511F4C400ED038E /* Remote Image Loader */,
 				615DE38C250BBE9500E59B24 /* SignIn */,
 				6121F137250A82840062503C /* Home */,
 				6121F13D250A82840062503C /* Messages */,
@@ -202,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				6121F13C250A82840062503C /* HomeMain.swift */,
+				6186637E2511FC8C002BD453 /* New Post */,
 				6121F138250A82840062503C /* Product Group */,
 			);
 			path = Home;
@@ -230,15 +249,32 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		6145F9942517315600D5784E /* ImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				61DBEBED251A02A8008758A2 /* PostImageView.swift */,
+				6145F9A3251732E800D5784E /* ImagePicker.swift */,
+			);
+			path = ImagePicker;
+			sourceTree = "<group>";
+		};
 		615DE38C250BBE9500E59B24 /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
 				615DE38D250BBEB800E59B24 /* SignInView.swift */,
 				61A84DBC250CB49600ED1441 /* UserDetailsView.swift */,
-				618D272E250CF3AE0062B709 /* ImageLoader.swift */,
-				618D2730250CF9260062B709 /* RemoteImage.swift */,
 			);
 			path = SignIn;
+			sourceTree = "<group>";
+		};
+		6186637E2511FC8C002BD453 /* New Post */ = {
+			isa = PBXGroup;
+			children = (
+				6186637F2511FCA0002BD453 /* NewPostView.swift */,
+				6127996E2515D2D300D1A8FA /* PostUserInfoView.swift */,
+				6145F9942517315600D5784E /* ImagePicker */,
+			);
+			path = "New Post";
 			sourceTree = "<group>";
 		};
 		869F154FD21481545EB98818 /* Pods */ = {
@@ -275,8 +311,8 @@
 				6121F0F8250A82550062503C /* Sources */,
 				6121F0F9250A82550062503C /* Frameworks */,
 				6121F0FA250A82550062503C /* Resources */,
-				21A92143CCF4645FF344397E /* [CP] Embed Pods Frameworks */,
-				114E0F1E7AE3DB2D122B229F /* [CP] Copy Pods Resources */,
+				894CFD8C3AB2FE47B1B506F3 /* [CP] Embed Pods Frameworks */,
+				3FB516AEA55CD30B25486F66 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -314,8 +350,8 @@
 				6121F119250A82580062503C /* Sources */,
 				6121F11A250A82580062503C /* Frameworks */,
 				6121F11B250A82580062503C /* Resources */,
-				2100B50476C91E1D96957D10 /* [CP] Embed Pods Frameworks */,
-				237069617E12110DFD13E804 /* [CP] Copy Pods Resources */,
+				AD415C35CCBDCC4CC3D17DC1 /* [CP] Embed Pods Frameworks */,
+				DDAFEF6A41F557F865C4DB3B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -399,7 +435,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		114E0F1E7AE3DB2D122B229F /* [CP] Copy Pods Resources */ = {
+		3FB516AEA55CD30B25486F66 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -414,57 +450,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2100B50476C91E1D96957D10 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		21A92143CCF4645FF344397E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		237069617E12110DFD13E804 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6FDC6BF821C53DD911C4A0B0 /* [CP] Check Pods Manifest.lock */ = {
@@ -489,6 +474,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		894CFD8C3AB2FE47B1B506F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD415C35CCBDCC4CC3D17DC1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D10E28EAB8BE05E6D7B9CF45 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -509,6 +528,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDAFEF6A41F557F865C4DB3B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FC43124C3F5168ACCFF283EB /* [CP] Check Pods Manifest.lock */ = {
@@ -541,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61453BE9250B61B1003FFE5E /* MessagesObserver.swift in Sources */,
+				618663802511FCA0002BD453 /* NewPostView.swift in Sources */,
 				61453BEC250B6200003FFE5E /* PostObserver.swift in Sources */,
 				6121F149250A82840062503C /* MessagesMain.swift in Sources */,
 				6121F148250A82840062503C /* ChatBoxView.swift in Sources */,
@@ -551,10 +588,13 @@
 				6121F147250A82840062503C /* MessageRow.swift in Sources */,
 				618D2731250CF9260062B709 /* RemoteImage.swift in Sources */,
 				6121F145250A82840062503C /* EachProduct.swift in Sources */,
+				6145F9A4251732E800D5784E /* ImagePicker.swift in Sources */,
 				615DE38E250BBEB800E59B24 /* SignInView.swift in Sources */,
+				61DBEBEE251A02A8008758A2 /* PostImageView.swift in Sources */,
 				618D272F250CF3AE0062B709 /* ImageLoader.swift in Sources */,
 				6121F102250A82550062503C /* SceneDelegate.swift in Sources */,
 				6121F142250A82840062503C /* AccountMain.swift in Sources */,
+				6127996F2515D2D300D1A8FA /* PostUserInfoView.swift in Sources */,
 				6121F14C250A87360062503C /* ProductDetails.swift in Sources */,
 				6121F134250A82730062503C /* ContentView.swift in Sources */,
 				6121F146250A82840062503C /* HomeMain.swift in Sources */,

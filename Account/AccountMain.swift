@@ -30,8 +30,7 @@ struct AccountMain: View
                     {
                         NavigationLink(destination: UserDetailsView())
                         {
-                            Image("user")
-                                .resizable()
+                            RemoteImage(url: userImage)
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 100, height: 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)

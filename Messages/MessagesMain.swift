@@ -34,8 +34,3 @@ struct MessagesMain: View
         }
     }
 }
-struct MessagesMain_Previews: PreviewProvider {
-    static var previews: some View {
-        MessagesMain()
-    }
-}

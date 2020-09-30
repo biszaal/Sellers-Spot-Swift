@@ -10,50 +10,48 @@ import SwiftUI
 struct HomeMain: View
 {
     @State var searchTextField: String = ""
+    @State var newPostView: Bool = false
     
     var body: some View
     {
         VStack(alignment: .leading)
         {
             HStack
-            {
-                HStack
                 {
-                    Image(systemName: "magnifyingglass")
-                        .padding()
-                        .foregroundColor(.secondary)
-                    TextField("Search", text: $searchTextField)
+                    HStack
+                        {
+                            Image(systemName: "magnifyingglass")
+                                .padding()
+                                .foregroundColor(.secondary)
+                            TextField("Search", text: $searchTextField)
+                            
+                    }
+                    .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule().stroke(Color.gray, lineWidth: 1))
+                        .shadow(radius: 5)
                     
-                }
-                .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
-                .clipShape(Capsule())
-                .overlay(
-                    Capsule().stroke(Color.gray, lineWidth: 1))
-                .shadow(radius: 5)
-                
-                Spacer()
-                
-                Button(action: {
+                    Spacer()
                     
-                })
-                {
-                    Image(systemName: "plus")
-                        .padding()
-                        .font(.title)
-                        .background(Color(UIColor.systemBlue))
-                        .foregroundColor(.primary).colorInvert()
-                        .clipShape(Circle())
-                }
+                    Button(action: {
+                        self.newPostView.toggle()
+                    })
+                    {
+                        Image(systemName: "plus")
+                            .padding()
+                            .font(.title)
+                            .background(Color(UIColor.systemBlue))
+                            .foregroundColor(.primary).colorInvert()
+                            .clipShape(Circle())
+                    }
             }
             .padding()
             
             ProductGroup()
         }
-    }
-}
-
-struct HomeMain_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeMain()
+        .sheet(isPresented: $newPostView, content: {
+            NewPostView(newPostView: self.$newPostView)
+        })
     }
 }

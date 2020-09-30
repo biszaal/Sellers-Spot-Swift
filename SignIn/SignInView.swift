@@ -18,6 +18,8 @@ struct SignInView: View
         {
             GoogleSignView().frame(width: 200, height: 55)
             .shadow(radius: 10)
+                
+            .navigationBarTitle("Sign in Page", displayMode: .inline)
         }
     }
 }

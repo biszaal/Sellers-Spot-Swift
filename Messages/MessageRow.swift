@@ -58,9 +58,3 @@ struct MessageRow: View
         }
     }
 }
-
-struct MessageRow_Previews: PreviewProvider {
-    static var previews: some View {
-        MessageRow()
-    }
-}

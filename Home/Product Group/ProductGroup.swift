@@ -6,19 +6,21 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct ProductGroup: View
 {
+    @ObservedObject var posts = PostObserver()
     
     var body: some View
     {
         ScrollView(showsIndicators: false)
             {
-                ForEach(productsList)
+            ForEach(posts.posts.reversed())
                 { product in
                     EachProduct(products: product)
                 }
-        }
+            }
     }
 }
 
@@ -27,3 +29,4 @@ struct ProductGroup_Previews: PreviewProvider {
         ProductGroup()
     }
 }
+

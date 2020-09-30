@@ -7,6 +7,14 @@ target 'Sellers Spot' do
 
   # Pods for Sellers Spot
 
+pod 'Firebase/Analytics'
+pod 'Firebase/Firestore'
+pod 'Firebase/Storage'
+pod 'Firebase/Auth'
+pod 'Firebase/Core'
+pod 'Firebase/Database'
+pod 'GoogleSignIn'
+
   target 'Sellers SpotTests' do
     inherit! :search_paths
     # Pods for testing
@@ -16,9 +24,5 @@ target 'Sellers Spot' do
     # Pods for testing
   end
 
-pod 'Firebase/Analytics'
-pod 'Firebase/Firestore'
-pod 'Firebase/Auth'
-pod 'GoogleSignIn'
 
 end
