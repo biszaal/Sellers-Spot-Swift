@@ -11,6 +11,8 @@ struct MessagesListView: View
 {
     var data: Messages
     
+    @ObservedObject var messageData = MessagesObserver()
+    
     var body: some View
     {
         HStack(spacing: 12)
@@ -46,9 +48,9 @@ struct MessagesListView: View
 }
 
 
-struct Messages: Identifiable
+struct Messages: Identifiable, Equatable
 {
-    var id: Int
+    var id: String
     var username: String
     var userImage: String
     var message: String
@@ -56,10 +58,10 @@ struct Messages: Identifiable
 }
 
 var data = [
-    Messages(id: 01, username: "brownguyintokyo", userImage: "rumon", message: "What's up my bro?", date: "1996/09/04"),
-    Messages(id: 02, username: "lakku", userImage: "lakku", message: "Hey my love", date: "2020/07/04"),
-    Messages(id: 03, username: "bubblyQueen", userImage: "sapana", message: "Sup guys?", date: "2020/08/10"),
-    Messages(id: 04, username: "stranzer", userImage: "niraj", message: "Namaskar!!!!!!!!!!!!!!!!!", date: "2020/09/03"),
-    Messages(id: 05, username: "theteDon", userImage: "emon", message: "Dai, ludo khelam!", date: "2020/09/10"),
-    Messages(id: 06, username: "biszaal", userImage: "user", message: "Its me the developer", date: "2020/08/30")
+    Messages(id: "01", username: "brownguyintokyo", userImage: "rumon", message: "What's up my bro?", date: "1996/09/04"),
+    Messages(id: "02", username: "lakku", userImage: "lakku", message: "Hey my love", date: "2020/07/04"),
+    Messages(id: "03", username: "bubblyQueen", userImage: "sapana", message: "Sup guys?", date: "2020/08/10"),
+    Messages(id: "04", username: "stranzer", userImage: "niraj", message: "Namaskar!!!!!!!!!!!!!!!!!", date: "2020/09/03"),
+    Messages(id: "05", username: "theteDon", userImage: "emon", message: "Dai, ludo khelam!", date: "2020/09/10"),
+    Messages(id: "06", username: "biszaal", userImage: "user", message: "Its me the developer", date: "2020/08/30")
 ]

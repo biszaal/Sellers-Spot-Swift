@@ -8,6 +8,8 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import FBSDKCoreKit
+import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
@@ -17,12 +19,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
+        
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
+        
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
     }
     
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+    // MARK: Google SignIn
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?)
+    {
  
       if let error = error {
         
@@ -50,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
                 UserDefaults.standard.set(imageUrl, forKey: "userImage")
                 print(" image url: ", imageUrl)
             }
-            
             UserDefaults.standard.set(true, forKey: "status")
             NotificationCenter.default.post(name: NSNotification.Name("statusChange"), object: nil)
         }
@@ -60,6 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
 
     }
+    
+    
 
     // MARK: UISceneSession Lifecycle
 

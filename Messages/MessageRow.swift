@@ -9,10 +9,13 @@ import SwiftUI
 
 struct MessageRow: View
 {
-    
     @State var userImage: String = ""
-    @State var myMessage: Bool = false
-    @State var message: String = ""
+    
+    var userId: String
+    var myMessage: Bool
+    var message: String
+    
+    @ObservedObject var user = UserDataObserver()
     
     var body: some View
     {
@@ -56,5 +59,6 @@ struct MessageRow: View
                 
             }
         }
+        
     }
 }

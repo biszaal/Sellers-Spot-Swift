@@ -2,14 +2,17 @@ import Firebase
 
 class MessagesObserver: ObservableObject
 {
-    @Published var messages = [MessagesDataType]()
     
-    init()
+    @Published var messages = [MessagesDataType]() // Inside of chatbox
+    //@Published var messageData = [Messages]()   // Outside of chatbox
+    
+    func fetchData(_ numberOfMessages: Int, firstId: String, secondId: String)
     {
         let db = Firestore.firestore()
-        
-        db.collection("messages").addSnapshotListener
+        db.collection("messages").order(by: "time").limit(toLast: numberOfMessages).addSnapshotListener
             { (snap, err) in
+            
+            self.messages.removeAll()
                 
                 if err != nil
                 {
@@ -21,23 +24,26 @@ class MessagesObserver: ObservableObject
                 {
                     if i.type == .added
                     {
-                        let name = i.document.get("name") as! String
-                        let image = i.document.get("image") as! String?
-                        let message = i.document.get("message") as! String
-                        let id = i.document.documentID
+                        let id = i.document.get("userId") as? String ?? ""
+                        let sendToId = i.document.get("sendToId") as? String ?? ""
+                        let message = i.document.get("message") as? String ?? ""
+                        let time = i.document.get("time") as? String ?? ""
                         
-                        self.messages.append(MessagesDataType(id: id, name: name, image: image ?? "", message: message))
-                        
+                        if(id == firstId && secondId == sendToId) || (firstId == sendToId && secondId == id)
+                        {
+                            self.messages.append(MessagesDataType(id: id, sendToId: sendToId, message: message, time: time))
+                        }
                     }
                 }
+            
         }
     }
     
-    func addMessage(message: String, user: String, image: String)
+    func addMessage(userId: String, SendToId: String, message: String)
     {
         let db = Firestore.firestore()
         
-        db.collection("messages").addDocument(data: ["message": message, "name": user, "image": image])
+        db.collection("messages").addDocument(data: ["userId" : userId, "sendToId": SendToId, "message": message, "time": rnDate()])
         { (err) in
             
             if err != nil
@@ -45,15 +51,24 @@ class MessagesObserver: ObservableObject
                 print((err?.localizedDescription)!)
                 return
             }
-            print("success")
+            print("message sent")
         }
+    }
+    
+    func rnDate() -> String
+    {
+        let isoFormatter = DateFormatter()
+        isoFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss.Z"
+        
+        let date = isoFormatter.string(from: Date())
+        return date
     }
 }
 
-struct MessagesDataType: Identifiable
+struct MessagesDataType: Identifiable, Equatable
 {
     var id: String
-    var name: String
-    var image: String
+    var sendToId: String
     var message: String
+    var time: String
 }

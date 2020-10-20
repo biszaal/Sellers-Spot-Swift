@@ -11,12 +11,14 @@ import GoogleSignIn
 
 struct AccountMain: View
 {
+    
+    @State var loggedIn: Bool = UserDefaults.standard.bool(forKey: "status")
+    @State var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     @State var username: String = UserDefaults.standard.string(forKey: "username") ?? ""
     @State var userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
     @State var userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     
     @ObservedObject var imageLoader = ImageLoader()
-    @State var loggedIn: Bool = UserDefaults.standard.bool(forKey: "status")
     
     var body: some View
     {
@@ -26,8 +28,6 @@ struct AccountMain: View
             {
                 HStack(spacing: 30)
                 {
-                    if loggedIn
-                    {
                         NavigationLink(destination: UserDetailsView())
                         {
                             RemoteImage(url: userImage)
@@ -51,36 +51,12 @@ struct AccountMain: View
                                 
                             }
                         }
-                    }
-                    else {
-                        
-                        NavigationLink(destination: SignInView())
-                        {
-                            Text("Sign Up")
-                                .font(.title)
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color(UIColor.systemBlue))
-                        }
-                    }
                 }
                 .frame(height: 150)
             }
+            .navigationTitle("Account")
         }
-        .onAppear()
-        {
-            NotificationCenter.default.addObserver(forName: NSNotification.Name("statusChange"), object: nil, queue: .main)
-            { (_) in
-                let loggedIn = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
-                let username: String = UserDefaults.standard.string(forKey: "username") ?? ""
-               let userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
-                let userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
-                
-                self.loggedIn = loggedIn
-                self.username = username
-                self.userEmail = userEmail
-                self.userImage = userImage
-            }
-        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

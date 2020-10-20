@@ -14,6 +14,8 @@ pod 'Firebase/Auth'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'GoogleSignIn'
+pod 'FBSDKLoginKit'
+
 
   target 'Sellers SpotTests' do
     inherit! :search_paths
