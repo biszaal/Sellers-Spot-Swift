@@ -5,6 +5,8 @@ class PostObserver: ObservableObject
 {
     @Published private(set) var posts = [PostDetails]()
     
+    var dateFormatter = DateFormatter()
+    
     func fetchData(_ numberOfPosts: UInt, searchValue: String? = "")
     {
         let postsRef = Database.database().reference().child("posts")
@@ -21,7 +23,7 @@ class PostObserver: ObservableObject
                             { snapshot in
                                 
                                 self.posts.removeAll()
-                                print("data removed")
+                                
                                 
                                 for child in snapshot.children
                                 {
@@ -32,7 +34,7 @@ class PostObserver: ObservableObject
                                        let username = dict["username"] as? String? ?? "",
                                        let userImage = dict["userImage"] as? String? ?? "",
                                        let productName = dict["postName"] as? String? ?? "",
-                                       let productImage = dict["postImage"] as? [String]? ?? [],
+                                       let productImage = dict["postImage"] as? [String] ?? [],
                                        let productDescription = dict["postDescription"] as? String? ?? "",
                                        let productPrice = dict["postPrice"] as? String? ?? "",
                                        let postedDate = dict["postDate"] as? String? ?? "",
@@ -42,8 +44,11 @@ class PostObserver: ObservableObject
                                        let postDislike = dislikeSnapshot?.allValues as? [String] ?? []
                                     
                                     {
+                                        self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                                        let postedDate = self.dateFormatter.date(from:postedDate)!
+                                        
                                         self.posts.insert(PostDetails(id: id, userId: userId, userName: username, userImage: userImage, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: productPrice, postLocation: "", postDate: postedDate, postLike: postLike, postDislike: postDislike), at: 0)
-                                        print("data stored")
+                                        
                                     }
                                 }
                             })
@@ -56,7 +61,7 @@ class PostObserver: ObservableObject
     func addPost(id: String, userId: String, username: String, userImage: String, postName: String, postImage: [String], postDescription: String, postPrice: String)
     {
         let posts = Database.database().reference()
-        posts.child("posts").child(id).setValue(["id" : id, "userId": userId, "username": username, "userImage": userImage, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": "" ,"postDate": rnDate(), "postLike": [], "postDislike": []])
+        posts.child("posts").child(id).setValue(["id" : id, "userId": userId, "username": username, "userImage": userImage, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": "" ,"postDate": Date().description, "postLike": [], "postDislike": []])
     }
     
 
@@ -89,12 +94,5 @@ class PostObserver: ObservableObject
         }
     }
     
-    func rnDate() -> String
-    {
-        let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss.Z"
-        
-        let date = isoFormatter.string(from: Date())
-        return date
-    }
+
 }

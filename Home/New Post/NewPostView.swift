@@ -60,59 +60,61 @@ struct NewPostView: View
                         {
                             isUploading = true  // show uploading process bar
                             
-                    self.newPostView = false
-                    postId = UUID().uuidString      // creating unique identifier for each post ( this is gonna be name of the post and image folder)
-                    
-                    print("\(storeImages.count) images uploaded")
-                    
-                    // Storing images to the firebase Storage
-                    
-                    let storage = Storage.storage()
-                    for i in 0..<storeImages.count
-                    {
-                        let taskReference = storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").putData((storeImages[i]!.jpegData(compressionQuality: 0.50))!, metadata: nil)
-                        {   (url, err) in
-                            if err != nil
-                            {
-                                print((err?.localizedDescription)!)
-                                return
-                            }
-                            print("success uploading image\(i) to firebase")
+                            self.newPostView = false
+                            postId = UUID().uuidString      // creating unique identifier for each post ( this is gonna be name of the post and image folder)
                             
-                            storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").downloadURL
-                            {   url, err in
-                                if err != nil
-                                {
-                                    print((err?.localizedDescription)!)
-                                    return
-                                } else
-                                {
-                                    self.postImages.append(url!.absoluteString)
-                                    print(url!)
+                            print("\(storeImages.count) images uploaded")
+                            
+                            // Storing images to the firebase Storage
+                            
+                            let storage = Storage.storage()
+                            for i in 0..<storeImages.count
+                            {
+                                let taskReference = storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").putData((storeImages[i]!.jpegData(compressionQuality: 0.50))!, metadata: nil)
+                                {   (url, err) in
+                                    if err != nil
+                                    {
+                                        print((err?.localizedDescription)!)
+                                        return
+                                    }
+                                    print("success uploading image\(i) to firebase")
+                                    
+                                    storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").downloadURL
+                                    {   url, err in
+                                        if err != nil
+                                        {
+                                            print((err?.localizedDescription)!)
+                                            return
+                                        } else
+                                        {
+                                            self.postImages.append(url!.absoluteString)
+                                            print(url!)
+                                            
+                                            // when all the images has been posted and go their URL then add the post
+                                            if self.postImages.count == self.storeImages.count
+                                            {
+                                                // Storing post the firebase Cloud
+                                                self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
+                                                print("Done")
+                                                
+                                                isUploading = false     // hide uploading bar
+                                                
+                                                storeImages.removeAll()     // erasing the images picked from image picker after posting
+                                            }
+                                        }
+                                    }
                                 }
+                                
+                                // show progress
+                                taskReference.observe(.progress)
+                                { snapshot in
+                                    guard let pctThere = snapshot.progress?.fractionCompleted else { return }
+                                    self.photoUplodingProgress = Float(pctThere)
+                                    print("you are \(pctThere) completed")
+                                }
+                                
                             }
-                        }
-                        
-                        // show progress
-                        taskReference.observe(.progress)
-                        { snapshot in
-                            guard let pctThere = snapshot.progress?.fractionCompleted else { return }
-                            self.photoUplodingProgress = Float(pctThere)
-                            print("you are \(pctThere) completed")
-                        }
-                        
-                    }
-                    // Storing post the firebase Cloud
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 15) {  // wait 15 second and upload everything
-                        // waiting 15 seconds will give time to save all images to firebase storage
-                        self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
-                        print("Done")
-                        
-                        isUploading = false     // hide uploading bar
-                        
-                        storeImages.removeAll()
-                    }
-                })
+                        })
                 {
                     Image(systemName: "paperplane.fill")
                     Text("Post")

@@ -20,6 +20,9 @@ struct PostGroup: View
     {
         ScrollView
         {
+            Spacer()
+                .frame(height: 100)
+            
             ForEach(posts.posts)
             { post in
                 EachPost(posts: post)
@@ -59,10 +62,3 @@ struct PostGroup: View
         }
     }
 }
-
-struct ProductGroup_Previews: PreviewProvider {
-    static var previews: some View {
-        PostGroup()
-    }
-}
-

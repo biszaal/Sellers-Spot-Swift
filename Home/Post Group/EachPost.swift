@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 import Firebase
 import FirebaseDatabase
 
@@ -37,7 +38,8 @@ struct EachPost: View
                 {
                     VStack(alignment: .leading, spacing: 2)
                     {
-                        RemoteImage(url: posts.userImage)
+                        WebImage(url: URL(string: posts.userImage))
+                            .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                             .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
@@ -57,36 +59,16 @@ struct EachPost: View
                     {
                         if posts.userId == userId   // if this is my post then only I can delete it
                         {
-                            Button(action:
-                                    {
-                                        // delete the post
-                                        let database = Database.database().reference()
-                                        database.child("posts").child(posts.id).setValue(nil)
-                                        
-                                        // delete the images
-                                        let storage = Storage.storage().reference()
-                                        for i in 0..<posts.postImage.count
-                                        {
-                                            storage.child("ImagesOfPosts/\(posts.userId)/\(posts.id)/image\(i).jpeg").delete { error in
-                                                if error != nil {
-                                                    print("Error deleting image")
-                                                } else {
-                                                    print("deleting images successful")
-                                                }
-                                            }
-                                        }
-                                        
-                                            postDeleted = true
-                                    })
+                            Button(action: deletePost)
                             {
                                 Image(systemName: "trash.fill")
                                     .font(.headline)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.red)
                                     .padding(.horizontal)
                             }
                         }
                         
-                        Text(posts.postDate)
+                        Text(posts.postDate.timeAgoDisplayed())
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -104,24 +86,22 @@ struct EachPost: View
                 
                 ScrollView(.horizontal, showsIndicators: false)
                 {
-                    HStack
+                    HStack(spacing: 10)
                     {
                         ForEach(0..<posts.postImage.count)
                         { i in
-                            RemoteImage(url: self.posts.postImage[i])
+                            WebImage(url: URL(string: self.posts.postImage[i]))
+                                .resizable()
+                                .frame(width: 200, height: 200)
                                 .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 200, height: 200, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .aspectRatio(contentMode: .fill)
                         }
                     }
                 }
                 
                 HStack
                 {
-                    Button(action:
-                            {
-                                didLike()
-                            })
+                    Button(action: didLike)
                     {
                         if likePressed
                         {
@@ -137,10 +117,7 @@ struct EachPost: View
                         }
                     }
                     
-                    Button(action:
-                            {
-                                didDislike()
-                            })
+                    Button(action: didDislike)
                     {
                         if dislikePressed
                         {
@@ -276,7 +253,24 @@ struct EachPost: View
     
     func deletePost()
     {
+        // delete the post
+        let database = Database.database().reference()
+        database.child("posts").child(posts.id).setValue(nil)
         
+        // delete the images
+        let storage = Storage.storage().reference()
+        for i in 0..<posts.postImage.count
+        {
+            storage.child("ImagesOfPosts/\(posts.userId)/\(posts.id)/image\(i).jpeg").delete { error in
+                if error != nil {
+                    print("Error deleting image")
+                } else {
+                    print("deleting images successful")
+                }
+            }
+        }
+        
+        postDeleted = true
     }
 }
 

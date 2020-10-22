@@ -11,7 +11,7 @@ struct PostDetails: Identifiable, Equatable
     var postDescription: String
     var postPrice: String
     var postLocation: String
-    var postDate: String
+    var postDate: Date
     var postLike: [String]
     var postDislike: [String]
 }

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct PostUserInfoView: View
 {
@@ -18,7 +19,8 @@ struct PostUserInfoView: View
     {
         HStack
             {
-                RemoteImage(url: userImage)
+            WebImage(url: URL(string: userImage))
+                .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     .overlay(

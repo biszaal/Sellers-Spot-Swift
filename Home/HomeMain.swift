@@ -16,48 +16,58 @@ struct HomeMain: View
     
     var body: some View
     {
-        VStack(alignment: .leading)
+        ZStack(alignment: .top)
         {
             HStack
-                {
-                    HStack
-                        {
-                            Image(systemName: "magnifyingglass")
-                                .padding()
-                                .foregroundColor(.secondary)
-                        TextField("Search", text: $searchTextField)
-                            .onReceive(Just(searchTextField)) { (newValue: String) in
-                                self.searchTextField = String(newValue.prefix(20))
-                                        }
-                            
-                    }
-                    .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
-                    .clipShape(Capsule())
-                    .overlay(
-                        Capsule().stroke(Color.gray, lineWidth: 1))
-                        .shadow(radius: 5)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        self.newPostView.toggle()
-                    })
-                    {
-                        Image(systemName: "plus")
-                            .padding()
-                            .font(.title)
-                            .foregroundColor(.primary)
-                            .colorInvert()
-                            .background(Color(UIColor.systemOrange))
-                            .clipShape(Circle())
-                    }
-            }
-            .padding()
-            
-            if isUploading
             {
-                ProgressView("Uploading...", value: photoUplodingProgress, total: 1)
+                HStack
+                {
+                    Image(systemName: "magnifyingglass")
+                        .padding()
+                        .foregroundColor(.secondary)
+                    
+                    TextField("Search", text: $searchTextField)
+                        .onReceive(Just(searchTextField))
+                        { (newValue: String) in
+                            self.searchTextField = String(newValue.prefix(20))
+                        }
+                    
+                }
+                .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
+                .background(Color.primary.colorInvert())
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule().stroke(Color.gray, lineWidth: 1))
+                .shadow(radius: 5)
+                
+                Spacer()
+                
+                Button(action: {
+                    self.newPostView.toggle()
+                })
+                {
+                    Image(systemName: "plus")
+                        .padding()
+                        .font(.title)
+                        .foregroundColor(.primary)
+                        .colorInvert()
+                        .background(Color.accentColor)
+                        .clipShape(Circle())
+                }
+                .shadow(radius: 10)
             }
+            .zIndex(1)
+            .padding()
+            .padding(.top, (UIApplication.shared.windows.last?.safeAreaInsets.top)! - 10)
+            .background(Color.orange.opacity(0.9))
+            .edgesIgnoringSafeArea(.top)
+            
+            
+//            has bug right now
+                        if isUploading
+                        {
+                            ProgressView("Uploading...", value: photoUplodingProgress, total: 1)
+                        }
             
             if searchTextField != ""    // if searching
             {
@@ -68,6 +78,7 @@ struct HomeMain: View
                 PostGroup()
             }
         }
+        
         .sheet(isPresented: $newPostView, content: {
             NewPostView(newPostView: self.$newPostView, photoUplodingProgress: self.$photoUplodingProgress, isUploading: self.$isUploading)
         })

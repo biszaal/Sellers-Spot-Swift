@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 import Firebase
 import GoogleSignIn
 
@@ -18,8 +19,6 @@ struct AccountMain: View
     @State var userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
     @State var userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     
-    @ObservedObject var imageLoader = ImageLoader()
-    
     var body: some View
     {
         NavigationView
@@ -30,7 +29,8 @@ struct AccountMain: View
                 {
                         NavigationLink(destination: UserDetailsView())
                         {
-                            RemoteImage(url: userImage)
+                            WebImage(url: URL(string: userImage))
+                                .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 100, height: 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
@@ -57,11 +57,5 @@ struct AccountMain: View
             .navigationTitle("Account")
         }
         .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
-
-struct AccountMain_Previews: PreviewProvider {
-    static var previews: some View {
-        AccountMain()
     }
 }

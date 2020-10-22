@@ -43,7 +43,7 @@ class MessagesObserver: ObservableObject
     {
         let db = Firestore.firestore()
         
-        db.collection("messages").addDocument(data: ["userId" : userId, "sendToId": SendToId, "message": message, "time": rnDate()])
+        db.collection("messages").addDocument(data: ["userId" : userId, "sendToId": SendToId, "message": message, "time": Date().description])
         { (err) in
             
             if err != nil
@@ -53,15 +53,6 @@ class MessagesObserver: ObservableObject
             }
             print("message sent")
         }
-    }
-    
-    func rnDate() -> String
-    {
-        let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy.MM.dd.HH.mm.ss.Z"
-        
-        let date = isoFormatter.string(from: Date())
-        return date
     }
 }
 
