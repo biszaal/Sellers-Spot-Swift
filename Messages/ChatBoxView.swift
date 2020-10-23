@@ -49,13 +49,13 @@ struct ChatBoxView: View
                     
                     ForEach(message.messages)
                     { each in
-//                            MessageRow(userId: each.id, sendToId: each.sendToId, message: each.message)
-                        Text(each.message)
+                            MessageRow(userId: each.id, sendToId: each.sendToId, message: each.message)
+//                        Text(each.message)
                     }
                     .onAppear()
                     {
                         if openingViewFirstTime
-                        {       // scroll to the bottom while opening
+                        {       // scroll to the bottom when open
                             reader.scrollTo(message.messages.last!.id, anchor: .bottom)
                             openingViewFirstTime = false
                         }

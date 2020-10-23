@@ -196,6 +196,8 @@ struct EachPost: View
         }
     }
     
+    // MARK: Like
+    
     // if post is liked and click like again will remove the like, same with dislike
     // if post is disliked and click like then dislike will remove and like will add, vice versa
     
@@ -225,6 +227,7 @@ struct EachPost: View
         }
     }
     
+    // MARK: Dislike
     func didDislike()
     {
         if dislikePressed
@@ -251,6 +254,7 @@ struct EachPost: View
         }
     }
     
+    // MARK: Delete Post
     func deletePost()
     {
         // delete the post

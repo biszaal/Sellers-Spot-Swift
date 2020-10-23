@@ -9,10 +9,12 @@ import SwiftUI
 
 struct MessageRow: View
 {
+    @State var myId: String = UserDefaults.standard.string(forKey: "username")!
+    
     @State var userImage: String = ""
     
     var userId: String
-    var myMessage: Bool
+    var sendToId: String
     var message: String
     
     @ObservedObject var user = UserDataObserver()
@@ -21,7 +23,7 @@ struct MessageRow: View
     {
         HStack
         {
-            if myMessage
+            if myId == userId
             {
                 Spacer()
                 
