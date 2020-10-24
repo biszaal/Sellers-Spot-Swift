@@ -15,6 +15,11 @@ struct ContentView: View
     @State var userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
     @State var userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     
+    @State var selectedIndex: Int = 1
+    @State var newPostView: Bool = false
+    @State var photoUplodingProgress: Float = 0
+    @State var isUploading: Bool = false
+    
     @ObservedObject var user = UserDataObserver()
     
     var body: some View
@@ -23,28 +28,51 @@ struct ContentView: View
         {
             if loggedIn
             {
-            TabView
-            {
-                HomeMain().tabItem {
-                    Image(systemName: "house.fill")
-                    Text("Home")
+                VStack
+                {
+                    if selectedIndex == 1
+                    {
+                        HomeMain()
+                    }
+                    
+                    if selectedIndex == 2
+                    {
+                        MessagesMain()
+                    }
+                    
+                    if selectedIndex == 3
+                    {
+                        FriendsMain()
+                    }
+                    
+                    if selectedIndex == 4
+                    {
+                        AccountMain()
+                    }
+                    
+                    //MARK: Process Bar
+                    if isUploading
+                    {
+                        ProgressView("Uploading...", value: photoUplodingProgress, total: 1)
+                            .onDisappear()
+                            {
+                                //Refreshing the page
+                                selectedIndex = 0
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
+                                {
+                                    selectedIndex = 1
+                                }
+                            }
+                    }
+                    
+                    Spacer()
+                    
+                    CustomTabView(selectedIndex: self.$selectedIndex, newPostView: $newPostView)
                 }
                 
-                MessagesMain().tabItem {
-                    Image(systemName: "message.fill")
-                    Text("Messages")
-                }
-                
-                FriendsMain().tabItem {
-                    Image(systemName: "person.3.fill")
-                    Text("Friends")
-                }
-                
-                AccountMain().tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Account")
-                }
-            }
+                .sheet(isPresented: $newPostView, content: {
+                    NewPostView(newPostView: self.$newPostView, photoUplodingProgress: self.$photoUplodingProgress, isUploading: self.$isUploading)
+                })
             }
             else
             {
@@ -58,7 +86,7 @@ struct ContentView: View
                 let loggedIn = UserDefaults.standard.value(forKey: "status") as? Bool ?? false
                 let userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
                 let username: String = UserDefaults.standard.string(forKey: "username") ?? ""
-               let userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
+                let userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
                 let userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
                 
                 self.loggedIn = loggedIn
@@ -73,11 +101,5 @@ struct ContentView: View
                 }
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }

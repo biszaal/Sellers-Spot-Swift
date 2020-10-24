@@ -15,7 +15,7 @@ struct EachPost: View
     @State private var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     
     @State var buttonText: String = "Buy"
-    @State var buttonColor: UIColor = UIColor.systemOrange
+    @State var buttonColor: UIColor = UIColor(Color("ButtonColor"))
     
     @State var likePressed: Bool = false
     @State var dislikePressed: Bool = false

@@ -29,10 +29,7 @@ class MessagesObserver: ObservableObject
                         let message = i.document.get("message") as? String ?? ""
                         let time = i.document.get("time") as? String ?? ""
                         
-                        if(id == firstId && secondId == sendToId) || (firstId == sendToId && secondId == id)
-                        {
-                            self.messages.append(MessagesDataType(id: id, sendToId: sendToId, message: message, time: time))
-                        }
+                        self.messages.append(MessagesDataType(id: id, sendToId: sendToId, message: message, time: time))
                     }
                 }
             

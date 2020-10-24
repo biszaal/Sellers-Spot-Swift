@@ -1,10 +1,3 @@
-//
-//  MessageRow.swift
-//  Sellers Spot
-//
-//  Created by Bishal Aryal on 20/9/10.
-//
-
 import SwiftUI
 
 struct MessageRow: View

@@ -1,10 +1,3 @@
-//
-//  MessagesMain.swift
-//  Tokyo Sellers spot
-//
-//  Created by Bishal Aryal on 20/9/8.
-//
-
 import SwiftUI
 import SDWebImageSwiftUI
 
@@ -49,6 +42,6 @@ struct MessagesMain: View
 //        Text("😉 Coming Soon...")
 //            .font(.largeTitle)
 //            .foregroundColor(.yellow) // everytime users sees this will be different color
-//        
+//
     }
 }

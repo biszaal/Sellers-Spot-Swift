@@ -10,9 +10,6 @@ import Combine
 struct HomeMain: View
 {
     @State var searchTextField: String = ""
-    @State var newPostView: Bool = false
-    @State var photoUplodingProgress: Float = 0
-    @State var isUploading: Bool = false
     
     var body: some View
     {
@@ -33,7 +30,7 @@ struct HomeMain: View
                         }
                     
                 }
-                .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
+                .frame(width: UIScreen.main.bounds.width / 1.2, height: 50, alignment: .leading)
                 .background(Color.primary.colorInvert())
                 .clipShape(Capsule())
                 .overlay(
@@ -42,32 +39,13 @@ struct HomeMain: View
                 
                 Spacer()
                 
-                Button(action: {
-                    self.newPostView.toggle()
-                })
-                {
-                    Image(systemName: "plus")
-                        .padding()
-                        .font(.title)
-                        .foregroundColor(.primary)
-                        .colorInvert()
-                        .background(Color.accentColor)
-                        .clipShape(Circle())
-                }
-                .shadow(radius: 10)
+                // Add a button next to search
             }
             .zIndex(1)
             .padding()
             .padding(.top, (UIApplication.shared.windows.last?.safeAreaInsets.top)! - 10)
-            .background(Color.orange.opacity(0.9))
+            .background(Color("AccentColor").opacity(0.9))
             .edgesIgnoringSafeArea(.top)
-            
-            
-//            has bug right now
-                        if isUploading
-                        {
-                            ProgressView("Uploading...", value: photoUplodingProgress, total: 1)
-                        }
             
             if searchTextField != ""    // if searching
             {
@@ -78,9 +56,5 @@ struct HomeMain: View
                 PostGroup()
             }
         }
-        
-        .sheet(isPresented: $newPostView, content: {
-            NewPostView(newPostView: self.$newPostView, photoUplodingProgress: self.$photoUplodingProgress, isUploading: self.$isUploading)
-        })
     }
 }
