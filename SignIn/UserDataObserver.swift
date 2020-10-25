@@ -86,8 +86,7 @@ class UserDataObserver: ObservableObject
                     let userEmail = document.get("email") as! String
                     let userImage = document.get("image") as! String
                     //let friends = document.get("friends") as! [String]
-
-
+                    
                     self.userDetails = (UserData(id: userId, name: username, email: userEmail, image: userImage))
                 }
             }

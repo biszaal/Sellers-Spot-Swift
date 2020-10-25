@@ -1,16 +1,22 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MessagesListView: View
 {
-    var data: Messages
+    var userId: String
+    var message: String
+    var time: Date
     
-    @ObservedObject var messageData = MessagesObserver()
+    @State var userName: String = ""
+    @State var userImage: String = ""
+    
+    @ObservedObject var userObserver = UserDataObserver()
     
     var body: some View
     {
         HStack(spacing: 12)
         {
-            Image(data.userImage)
+            WebImage(url: URL(string: userImage))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 40, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -21,9 +27,9 @@ struct MessagesListView: View
             
             VStack(alignment: .leading, spacing: 12)
             {
-                Text(data.username)
+                Text(userName)
                 
-                Text(data.message)
+                Text(message)
                     .font(.caption)
             }
             
@@ -31,12 +37,24 @@ struct MessagesListView: View
             
             VStack
             {
-                Text(data.date)
+                Text(time.timeAgoDisplayed())
                 
                 Spacer()
             }
         }
         .padding(.vertical)
+        
+        .onAppear()
+        {
+            userObserver.getUserDetails(id: userId)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) // waiting one second so the data can load
+            {
+                self.userName = userObserver.userDetails.name
+                self.userImage = userObserver.userDetails.image
+                
+            }
+        }
     }
 }
 
@@ -44,17 +62,8 @@ struct MessagesListView: View
 struct Messages: Identifiable, Equatable
 {
     var id: String
-    var username: String
-    var userImage: String
+    var userOne: String
+    var userTwo: String
     var message: String
-    var date: String
+    var time: Date
 }
-
-var data = [
-    Messages(id: "01", username: "brownguyintokyo", userImage: "rumon", message: "What's up my bro?", date: "1996/09/04"),
-    Messages(id: "02", username: "lakku", userImage: "lakku", message: "Hey my love", date: "2020/07/04"),
-    Messages(id: "03", username: "bubblyQueen", userImage: "sapana", message: "Sup guys?", date: "2020/08/10"),
-    Messages(id: "04", username: "stranzer", userImage: "niraj", message: "Namaskar!!!!!!!!!!!!!!!!!", date: "2020/09/03"),
-    Messages(id: "05", username: "theteDon", userImage: "emon", message: "Dai, ludo khelam!", date: "2020/09/10"),
-    Messages(id: "06", username: "biszaal", userImage: "user", message: "Its me the developer", date: "2020/08/30")
-]

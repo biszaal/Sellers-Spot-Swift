@@ -4,31 +4,34 @@ import SDWebImageSwiftUI
 struct MessagesMain: View
 {
     @State private var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
+    @Binding var hideTabBar: Bool
     
     @ObservedObject var user = UserDataObserver()
+    @ObservedObject var messageData = MessagesObserver()
     
     var body: some View
     {
             NavigationView
             {
-                List(user.userData)
+                List(messageData.messageList)
                 {   each in
 
-                    NavigationLink(destination: ChatBoxView(userId: userId, sendToId: each.id))
+                    NavigationLink(destination:
+                                    ChatBoxView(userId: each.userOne, sendToId: each.userTwo)
+                                    // hiding the tab bar while texting
+                                    .onAppear()
+                                    {
+                                            hideTabBar = true
+                                    }
+                                    
+                                    .onDisappear()
+                                    {
+                                            hideTabBar = false
+                                    })
                     {
                         HStack
                         {
-                            WebImage(url: URL(string: each.image))
-                                .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            .overlay(
-                                Circle().stroke(Color.blue, lineWidth: 1))
-                            .shadow(radius: 5)
-
-                            Text(each.name)
-                                .font(.body)
+                            MessagesListView(userId: each.userOne == userId ? each.userTwo : each.userOne, message: each.message, time: each.time)
                         }
                     }
                 }
@@ -36,7 +39,7 @@ struct MessagesMain: View
             }
             .onAppear()
             {
-                user.fetchData()
+                messageData.fetchList()
             }
         
 //        Text("😉 Coming Soon...")

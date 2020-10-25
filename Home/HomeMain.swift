@@ -30,7 +30,7 @@ struct HomeMain: View
                         }
                     
                 }
-                .frame(width: UIScreen.main.bounds.width / 1.2, height: 50, alignment: .leading)
+                .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
                 .background(Color.primary.colorInvert())
                 .clipShape(Capsule())
                 .overlay(

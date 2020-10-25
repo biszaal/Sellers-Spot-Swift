@@ -19,6 +19,8 @@ struct ContentView: View
     @State var newPostView: Bool = false
     @State var photoUplodingProgress: Float = 0
     @State var isUploading: Bool = false
+    @State var hideTabBar: Bool = false
+    @State var keyboardOn: Bool = false     // check if keyboard is appeared or not
     
     @ObservedObject var user = UserDataObserver()
     
@@ -30,6 +32,7 @@ struct ContentView: View
             {
                 VStack
                 {
+                    
                     if selectedIndex == 1
                     {
                         HomeMain()
@@ -37,7 +40,7 @@ struct ContentView: View
                     
                     if selectedIndex == 2
                     {
-                        MessagesMain()
+                        MessagesMain(hideTabBar: self.$hideTabBar)
                     }
                     
                     if selectedIndex == 3
@@ -47,7 +50,7 @@ struct ContentView: View
                     
                     if selectedIndex == 4
                     {
-                        AccountMain()
+                        AccountMain(hideTabBar: self.$hideTabBar)
                     }
                     
                     //MARK: Process Bar
@@ -58,7 +61,7 @@ struct ContentView: View
                             {
                                 //Refreshing the page
                                 selectedIndex = 0
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1)
                                 {
                                     selectedIndex = 1
                                 }
@@ -67,8 +70,15 @@ struct ContentView: View
                     
                     Spacer()
                     
-                    CustomTabView(selectedIndex: self.$selectedIndex, newPostView: $newPostView)
+                    if !hideTabBar
+                    {
+                        CustomTabView(selectedIndex: self.$selectedIndex, newPostView: $newPostView)
+                            .animation(.default)
+                            .transition(.move(edge: .bottom))
+                    }
+                    
                 }
+                .edgesIgnoringSafeArea(.bottom)
                 
                 .sheet(isPresented: $newPostView, content: {
                     NewPostView(newPostView: self.$newPostView, photoUplodingProgress: self.$photoUplodingProgress, isUploading: self.$isUploading)
@@ -100,6 +110,34 @@ struct ContentView: View
                     user.addUserData(id: userId, name: username, email: userEmail, image: userImage)
                 }
             }
+            
+            // Keyboard Observer
+            
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
+            { _ in
+                self.keyboardOn = true
+                
+            }
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
+            { _ in
+                self.keyboardOn = false
+            }
         }
+        
+        // hide keyboard on drag gesture
+        .gesture(DragGesture().onChanged(
+                    { _ in
+                        if keyboardOn
+                        {
+                            UIApplication.shared.endEditing()
+                        }
+                    }))
+    }
+    
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

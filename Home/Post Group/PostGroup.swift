@@ -28,6 +28,13 @@ struct PostGroup: View
                 EachPost(posts: post)
             }
             
+            if posts.posts.isEmpty
+            {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .font(.largeTitle)
+            }
+            
             if showSeeMore
             {
                 Button(action:

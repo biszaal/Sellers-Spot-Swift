@@ -45,7 +45,7 @@ class PostObserver: ObservableObject
                                     
                                     {
                                         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                                        let postedDate = self.dateFormatter.date(from:postedDate)!
+                                        let postedDate = self.dateFormatter.date(from:postedDate) ?? Date()
                                         
                                         self.posts.insert(PostDetails(id: id, userId: userId, userName: username, userImage: userImage, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: productPrice, postLocation: "", postDate: postedDate, postLike: postLike, postDislike: postDislike), at: 0)
                                         

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ChatBoxView: View
 {
-    
     var userId: String
     var sendToId: String
     
@@ -30,7 +29,7 @@ struct ChatBoxView: View
                         Button(action:
                                 {
                                     numberOfMessages += 3
-                                    message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                                    //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
                                 })
                         {
                             Text("See more...")
@@ -57,7 +56,7 @@ struct ChatBoxView: View
                 .onAppear()
                 {
                     openingViewFirstTime = true
-                    message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                    //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
                 }
                 
                 Spacer()
@@ -70,11 +69,12 @@ struct ChatBoxView: View
                         .padding(.horizontal, 15)
                         .overlay(Capsule().stroke(Color.secondary, lineWidth: 2))
                     
-                    Button(action: {
-                        self.message.addMessage(userId: userId, SendToId: sendToId, message: typedMessage)
+                    Button(action:
+                            {
+                                self.message.addMessage(chatId: "", userId: userId, SendToId: sendToId, message: typedMessage)
                         self.typedMessage = ""
                         reader.scrollTo(message.messages.last?.id, anchor: .bottom)
-                        message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                        //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
                     })
                     {
                         Text("Send")

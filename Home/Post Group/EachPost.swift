@@ -13,9 +13,7 @@ import FirebaseDatabase
 struct EachPost: View
 {
     @State private var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
-    
-    @State var buttonText: String = "Buy"
-    @State var buttonColor: UIColor = UIColor(Color("ButtonColor"))
+    @State var productSold: Bool = false
     
     @State var likePressed: Bool = false
     @State var dislikePressed: Bool = false
@@ -147,18 +145,18 @@ struct EachPost: View
                 {
                     Button(action: {
                         // when bought
-                        self.buttonText = "Sold"
-                        self.buttonColor = UIColor.gray
+                        self.productSold = true
                     })
                     {
-                        Text(self.buttonText)
+                        Text(self.productSold ? "Sold" : "Buy")
                             .padding()
                             .lineLimit(1)
                             .frame(width: UIScreen.main.bounds.width / 3.5)
                             .foregroundColor(.white)
-                            .background(Color(self.buttonColor))
-                            .cornerRadius(20)
+                            .background(self.productSold ? .secondary : Color("ButtonColor"))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                     
                     Spacer()
                     
@@ -170,9 +168,10 @@ struct EachPost: View
                             .lineLimit(1)
                             .frame(width: UIScreen.main.bounds.width / 3.5)
                             .foregroundColor(.white)
-                            .background(Color(self.buttonColor))
-                            .cornerRadius(20)
+                            .background(self.productSold ? .secondary : Color("ButtonColor"))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                 }
             }
             .padding(10)
@@ -275,6 +274,22 @@ struct EachPost: View
         }
         
         postDeleted = true
+    }
+    
+    func buttonBackground() -> some View
+    {
+        return ZStack
+        {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(self.productSold ? .secondary : Color(#colorLiteral(red: 0.01822857372, green: 0.2216099203, blue: 0.4166321754, alpha: 1)))
+                .blur(radius: 4)
+                .offset(y: 5)
+            
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(self.productSold ? .secondary : Color("ButtonColor"))
+                .padding(3)
+                .blur(radius: 2)
+        }
     }
 }
 

@@ -19,6 +19,8 @@ struct AccountMain: View
     @State var userEmail: String = UserDefaults.standard.string(forKey: "userEmail") ?? ""
     @State var userImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     
+    @Binding var hideTabBar: Bool
+    
     var body: some View
     {
         NavigationView
@@ -27,7 +29,17 @@ struct AccountMain: View
             {
                 HStack(spacing: 30)
                 {
-                        NavigationLink(destination: UserDetailsView())
+                        NavigationLink(destination:
+                                        UserDetailsView()
+                                        .onAppear()
+                                        {
+                                                hideTabBar = true
+                                        }
+                                        
+                                        .onDisappear()
+                                        {
+                                                hideTabBar = false
+                                        })
                         {
                             WebImage(url: URL(string: userImage))
                                 .resizable()

@@ -19,42 +19,42 @@ struct CustomTabView: View
         {
             Button(action:
                     {
-                        withAnimation()
+                        withAnimation(.spring())
                         {
                             selectedIndex = 1
                         }
-            })
+                    })
             {
                 VStack
                 {
                     Image(systemName: "house.fill")
                         .font(.title)
                     Text("Home")
-                        .font(.caption2)
+                        .font(.system(size: 10))
                 }
             }
-            .foregroundColor(Color.primary.opacity(self.selectedIndex == 1 ? 1 : 0.2))
+            .foregroundColor(self.selectedIndex == 1 ? Color("ButtonColor") : .secondary)
             .offset(y: self.selectedIndex == 1 ? -10 : 0)
             
             Spacer(minLength: 0)
             
             Button(action:
                     {
-                        withAnimation()
+                        withAnimation(.spring())
                         {
                             selectedIndex = 2
                         }
-            })
+                    })
             {
                 VStack
                 {
                     Image(systemName: "message.fill")
                         .font(.title)
                     Text("Messages")
-                        .font(.caption2)
+                        .font(.system(size: 10))
                 }
             }
-            .foregroundColor(Color.primary.opacity(self.selectedIndex == 2 ? 1 : 0.2))
+            .foregroundColor(self.selectedIndex == 2 ? Color("ButtonColor") : .secondary)
             .offset(y: self.selectedIndex == 2 ? -10 : 0)
             
             Spacer(minLength: 0)
@@ -62,76 +62,78 @@ struct CustomTabView: View
             //MARK: Add New Post
             Button(action:
                     {
-                self.newPostView.toggle()
-            })
+                        self.newPostView.toggle()
+                    })
             {
                 Image(systemName: "plus")
                     .padding()
                     .frame(width: 60, height: 60)
                     .font(.system(size: 30, weight: .bold, design: .rounded))
-                    .foregroundColor(Color("AccentColor"))
+                    .foregroundColor(.secondary)
+                    .colorInvert()
                     .background(
                         ZStack
                         {
-                            Color("ButtonColor")
+                            
+                            Circle()
+                                .foregroundColor(Color(#colorLiteral(red: 0.01822857372, green: 0.2216099203, blue: 0.4166321754, alpha: 1)))
+                                .blur(radius: 4)
+                                .offset(y: 5)
                             
                             Circle()
                                 .foregroundColor(Color("ButtonColor"))
-                                .blur(radius: 4)
-                                .offset(x: -2, y: -2)
-                            
-                            Circle()
-                                .padding(2)
+                                .padding(3)
                                 .blur(radius: 2)
                         })
                     .clipShape(Circle())
             }
-            .shadow(color: Color("ButtonColor"), radius: 5)
-            .offset(y: -25)
+            .shadow(color: Color("ButtonColor"), radius: 5, y: 3)
+            .offset(y: -20)
             
             Spacer(minLength: 0)
             
             Button(action:
                     {
-                        withAnimation()
+                        withAnimation(.spring())
                         {
                             selectedIndex = 3
                         }
-            })
+                    })
             {
                 VStack
                 {
                     Image(systemName: "person.3.fill")
                         .font(.title)
                     Text("Friends")
-                        .font(.caption2)
+                        .font(.system(size: 10))
                 }
             }
-            .foregroundColor(Color.primary.opacity(self.selectedIndex == 3 ? 1 : 0.2))
+            .foregroundColor(self.selectedIndex == 3 ? Color("ButtonColor") : .secondary)
             .offset(y: self.selectedIndex == 3 ? -10 : 0)
             
             Spacer(minLength: 0)
             
             Button(action:
                     {
-                        withAnimation()
+                        withAnimation(.spring())
                         {
                             selectedIndex = 4
                         }
-            })
+                    })
             {
                 VStack
                 {
                     Image(systemName: "person.fill")
                         .font(.title)
                     Text("Account")
-                        .font(.caption2)
+                        .font(.system(size: 10))
                 }
             }
-            .foregroundColor(Color.primary.opacity(self.selectedIndex == 4 ? 1 : 0.2))
+            .foregroundColor(self.selectedIndex == 4 ? Color("ButtonColor") : .secondary)
             .offset(y: self.selectedIndex == 4 ? -10 : 0)
         }
         .padding(.horizontal, 35)
-        .background(Color.primary.colorInvert())
+        .padding(.bottom, 20)
+        .background(Color.secondary.colorInvert())
     }
 }
