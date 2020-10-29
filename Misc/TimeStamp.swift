@@ -40,4 +40,14 @@ extension Date
         
         return("\(secondsAgo / 60 / 60 / 24 / 365) years ago")
     }
+    
+    func rnDate() -> String
+    {
+        let isoFormatter = DateFormatter()
+        isoFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        isoFormatter.timeZone = TimeZone.autoupdatingCurrent
+        isoFormatter.locale = Locale.current
+        let date = isoFormatter.string(from: Date())
+        return date
+    }
 }

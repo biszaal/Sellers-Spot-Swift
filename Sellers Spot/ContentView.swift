@@ -105,6 +105,7 @@ struct ContentView: View
                 self.userEmail = userEmail
                 self.userImage = userImage
                 
+                //When logged in save the userdata
                 if loggedIn
                 {
                     user.addUserData(id: userId, name: username, email: userEmail, image: userImage)

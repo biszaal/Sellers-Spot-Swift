@@ -26,23 +26,23 @@ struct ChatBoxView: View
             {
                 ScrollView(showsIndicators: false)
                 {
-                        Button(action:
-                                {
-                                    numberOfMessages += 3
-                                    //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
-                                })
-                        {
-                            Text("See more...")
-                                .font(.caption)
-                                .padding()
-                                .background(Color(UIColor.secondarySystemBackground))
-                                .cornerRadius(30)
-                        }
+                    Button(action:
+                            {
+                                numberOfMessages += 3
+                                //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                            })
+                    {
+                        Text("See more...")
+                            .font(.caption)
+                            .padding()
+                            .background(Color(UIColor.secondarySystemBackground))
+                            .cornerRadius(30)
+                    }
                     
                     ForEach(message.messages)
                     { each in
-                            MessageRow(userId: each.id, sendToId: each.sendToId, message: each.message)
-//                        Text(each.message)
+                        MessageRow(userId: each.id, sendToId: each.sendToId, message: each.message)
+                        //                        Text(each.message)
                     }
                     .onAppear()
                     {
@@ -71,11 +71,12 @@ struct ChatBoxView: View
                     
                     Button(action:
                             {
+                                
                                 self.message.addMessage(chatId: "", userId: userId, SendToId: sendToId, message: typedMessage)
-                        self.typedMessage = ""
-                        reader.scrollTo(message.messages.last?.id, anchor: .bottom)
-                        //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
-                    })
+                                self.typedMessage = ""
+                                reader.scrollTo(message.messages.last?.id, anchor: .bottom)
+                                //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                            })
                     {
                         Text("Send")
                     }

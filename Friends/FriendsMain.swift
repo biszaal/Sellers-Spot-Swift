@@ -8,46 +8,76 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Combine
 
 struct FriendsMain: View
 {
     @State var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     
     @ObservedObject var message = MessagesObserver()
-    @ObservedObject var user = UserDataObserver()
+    @ObservedObject var userObserver = UserDataObserver()
+    
+    @State var users = [UserData]()
+    @State var searchTextField: String = ""
     
     var body: some View
     {
-        List(user.userData)
-        {   each in
+        VStack()
+        {
             HStack
             {
-                WebImage(url: URL(string: each.image))
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                    .overlay(
-                        Circle().stroke(Color.blue, lineWidth: 1))
-                    .shadow(radius: 5)
+                Image(systemName: "magnifyingglass")
+                    .padding()
+                    .foregroundColor(.secondary)
                 
-                Text(each.name)
-                    .font(.body)
+                TextField("Search", text: $searchTextField)
+                    .onReceive(Just(searchTextField))
+                    { (newValue: String) in
+                        self.searchTextField = String(newValue.prefix(20))
+                    }
+                
             }
-            .onTapGesture
-            {
-                message.addMessage(chatId: "", userId: myId, SendToId: each.id, message: "Hi")
+            .frame(height: 50, alignment: .leading)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10).stroke(Color.gray, lineWidth: 1))
+            .padding(.horizontal, 20)
+            
+            List(users)
+            {   each in
+                HStack
+                {
+                    WebImage(url: URL(string: each.image))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 50, height: 50, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .overlay(
+                            Circle().stroke(Color.blue, lineWidth: 1))
+                        .shadow(radius: 5)
+                    
+                    Text(each.name)
+                        .font(.body)
+                }
+                .onTapGesture
+                {
+                    message.addMessage(chatId: UUID().uuidString, userId: myId, SendToId: each.id, message: "Hello")
+                }
             }
         }
         .onAppear()
         {
-            user.fetchData()
+            userObserver.fetchData()
+            { user in
+                users.append(contentsOf: user)
+            }
         }
-    }
-}
-
-struct FriendsMain_Previews: PreviewProvider {
-    static var previews: some View {
-        FriendsMain()
+        
+        .onChange(of: searchTextField) { (_) in
+            if searchTextField != ""
+            {
+                print("not empty")
+            }
+        }
     }
 }

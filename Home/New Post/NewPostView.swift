@@ -58,7 +58,10 @@ struct NewPostView: View
                 
                 Button(action:      //this is post button
                         {
-                            isUploading = true  // show uploading process bar
+                            if !storeImages.isEmpty
+                            {
+                                isUploading = true  // show uploading process bar
+                            }
                             
                             self.newPostView = false
                             postId = UUID().uuidString      // creating unique identifier for each post ( this is gonna be name of the post and image folder)
@@ -93,13 +96,7 @@ struct NewPostView: View
                                             // when all the images has been posted and go their URL then add the post
                                             if self.postImages.count == self.storeImages.count
                                             {
-                                                // Storing post the firebase Cloud
-                                                self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
-                                                print("Done")
-                                                
-                                                isUploading = false     // hide uploading bar
-                                                
-                                                storeImages.removeAll()     // erasing the images picked from image picker after posting
+                                                addPost()
                                             }
                                         }
                                     }
@@ -190,5 +187,16 @@ struct NewPostView: View
                 .navigationBarHidden(true)
             }
         }
+    }
+    
+    func addPost()
+    {
+            // Storing post the firebase Cloud
+            self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
+            print("Done")
+            
+            isUploading = false     // hide uploading bar
+            
+            storeImages.removeAll()     // erasing the images picked from image picker after posting
     }
 }

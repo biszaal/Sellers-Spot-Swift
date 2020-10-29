@@ -9,6 +9,7 @@ import Combine
 
 struct HomeMain: View
 {
+    @ObservedObject var userObserver = UserDataObserver()
     @State var searchTextField: String = ""
     
     var body: some View
@@ -31,7 +32,7 @@ struct HomeMain: View
                     
                 }
                 .frame(width: UIScreen.main.bounds.width / 1.5, height: 50, alignment: .leading)
-                .background(Color.primary.colorInvert())
+                .background(Color.primary.colorInvert().opacity(0.6))
                 .clipShape(Capsule())
                 .overlay(
                     Capsule().stroke(Color.gray, lineWidth: 1))
@@ -47,14 +48,8 @@ struct HomeMain: View
             .background(Color("AccentColor").opacity(0.9))
             .edgesIgnoringSafeArea(.top)
             
-            if searchTextField != ""    // if searching
-            {
-                PostGroup(searchTextField: searchTextField)
-            }
-            else
-            {
-                PostGroup()
-            }
+
+                PostGroup(searchTextField: self.$searchTextField)
         }
     }
 }

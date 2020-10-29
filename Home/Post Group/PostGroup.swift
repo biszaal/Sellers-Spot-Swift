@@ -10,11 +10,11 @@ import Foundation
 
 struct PostGroup: View
 {
-    @ObservedObject var posts = PostObserver()
-    @State var numberOfPosts:UInt = 10
+    @ObservedObject var postObserver = PostObserver()
+    @State var posts = [PostDetails]()
     @State var showSeeMore: Bool = true
     
-    @State var searchTextField: String = ""
+    @Binding var searchTextField: String
     
     var body: some View
     {
@@ -23,36 +23,25 @@ struct PostGroup: View
             Spacer()
                 .frame(height: 100)
             
-            ForEach(posts.posts)
-            { post in
-                EachPost(posts: post)
-            }
-            
-            if posts.posts.isEmpty
+            if posts.isEmpty
             {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
                     .font(.largeTitle)
             }
-            
-            if showSeeMore
+            else
             {
-                Button(action:
-                        {
-                            numberOfPosts += 10
-                            posts.fetchData(numberOfPosts, searchValue: searchTextField)
-                            searchTextField = ""
-                        })
+                ForEach(posts)
+                { post in
+                    EachPost(post: post)
+                }
+                
+                if showSeeMore
                 {
-                    if searchTextField != ""
-                    {
-                        Text("Search")
-                            .font(.subheadline)
-                            .padding()
-                            .background(Color(UIColor.secondarySystemBackground))
-                            .cornerRadius(30)
-                    }
-                    else if !posts.posts.isEmpty
+                    Button(action:
+                            {
+                                batchFetching()
+                            })
                     {
                         Text("See more...")
                             .font(.subheadline)
@@ -65,7 +54,21 @@ struct PostGroup: View
         }
         .onAppear()
         {
-            posts.fetchData(numberOfPosts)
+            batchFetching()
+        }
+        
+        .onChange(of: searchTextField)
+        { (_) in
+            posts.removeAll()
+            batchFetching()
+        }
+    }
+    
+    func batchFetching()
+    {
+        postObserver.fetchData(searchValue: self.searchTextField, posts: self.posts)
+        { newPost in
+            self.posts.append(contentsOf: newPost)
         }
     }
 }

@@ -3,20 +3,12 @@ import SDWebImageSwiftUI
 
 struct MessagesListView: View
 {
-    var userId: String
-    var message: String
-    var time: Date
-    
-    @State var userName: String = ""
-    @State var userImage: String = ""
-    
-    @ObservedObject var userObserver = UserDataObserver()
-    
+    var message: MessagesDetails
     var body: some View
     {
         HStack(spacing: 12)
         {
-            WebImage(url: URL(string: userImage))
+            WebImage(url: URL(string: message.userImage))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 40, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -27,9 +19,9 @@ struct MessagesListView: View
             
             VStack(alignment: .leading, spacing: 12)
             {
-                Text(userName)
+                Text(message.userName)
                 
-                Text(message)
+                Text(message.message)
                     .font(.caption)
             }
             
@@ -37,33 +29,15 @@ struct MessagesListView: View
             
             VStack
             {
-                Text(time.timeAgoDisplayed())
+                Text(message.time.timeAgoDisplayed())
                 
                 Spacer()
             }
         }
         .padding(.vertical)
         
-        .onAppear()
-        {
-            userObserver.getUserDetails(id: userId)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) // waiting one second so the data can load
-            {
-                self.userName = userObserver.userDetails.name
-                self.userImage = userObserver.userDetails.image
-                
-            }
+        .onChange(of: message.message) { (_) in
+            print("Changed hai sathi hoo")
         }
     }
-}
-
-
-struct Messages: Identifiable, Equatable
-{
-    var id: String
-    var userOne: String
-    var userTwo: String
-    var message: String
-    var time: Date
 }

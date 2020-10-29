@@ -2,60 +2,45 @@ import Firebase
 
 class UserDataObserver: ObservableObject
 {
-    private var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
+    private var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     
     @Published var userData = [UserData]()
     
-    func fetchData()
+    func fetchData(completionHandler: @escaping (_ posts: [UserData]) -> ())
     {
         noticObserver()
         
-        let db = Firestore.firestore()
-        db.collection("users").addSnapshotListener
-        { (snap, err) in
-            
-            self.userData.removeAll()
-            
-            if err != nil
-            {
-                print((err?.localizedDescription)!)
-                return
-            }
-            
-            for i in snap!.documentChanges
-            {
-                if i.type == .added
-                {
-                    let id = i.document.get("id") as! String
-                    let name = i.document.get("name") as! String
-                    let email = i.document.get("email") as! String
-                    let image = i.document.get("image") as! String
-                    let friends = i.document.get("friends") as? [String]
-                    
-                    if id != self.userId
-                    {
-                        self.userData.append(UserData(id: id, name: name, email: email, image: image, friends: friends))
-                    }
-                }
-            }
-            
-        }
+        let postRef = Database.database().reference().child("users")
+        postRef.observeSingleEvent(of: .value, with:
+                                    { snapshot in
+                                        
+                                        var tempUserData = [UserData]()
+                                        
+                                        for child in snapshot.children
+                                        {
+                                            if let childSnapShot = child as? DataSnapshot,
+                                               let dict = childSnapShot.value as? [String: Any],
+                                               let id = dict["id"] as? String ?? "",
+                                               let name = dict["name"] as? String ?? "",
+                                               let email = dict["email"] as? String ?? "",
+                                               let image = dict["image"] as? String ?? "",
+                                               let friends = dict["friends"] as? [String] ?? []
+                                            {
+                                                if id != self.myId
+                                                {
+                                                    tempUserData.append(UserData(id: id, name: name, email: email, image: image, friends: friends))
+                                                }
+                                            }
+                                        }
+                                        return completionHandler(tempUserData)
+                                    })
     }
     
     func addUserData(id: String, name: String, email: String, image: String)
     {
-        let db = Firestore.firestore()
+        let db = Database.database().reference()
         
-        db.collection("users").document(id).setData(["id": id, "name": name, "email": email, "image": image])
-        { (err) in
-            
-            if err != nil
-            {
-                print((err?.localizedDescription)!)
-                return
-            }
-            print("message sent")
-        }
+        db.child("users").child(id).setValue(["id": id, "name": name, "email": email, "image": image])
     }
     
     func noticObserver()
@@ -63,38 +48,58 @@ class UserDataObserver: ObservableObject
         NotificationCenter.default.addObserver(forName: NSNotification.Name("statusChange"), object: nil, queue: .main)
         { (_) in
             let userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
-            self.userId = userId
+            self.myId = userId
         }
     }
     
-    @Published var userDetails = UserData(id: "", name: "", email: "", image: "") // get user id and return user details
-    
-    func getUserDetails(id: String)
+    // this will get the user Id and return the image and name of the user
+    func getUserDetails(id: String, completionHandler: @escaping (_ posts: UserData) -> ())
     {
-
-        let db = Firestore.firestore()
-        let docRef = db.collection("users").document(id)
-
-        docRef.getDocument
-        { (document, error) in
-            if error == nil
+        
+        let postRef = Database.database().reference().child("users").child(id)
+        postRef.observeSingleEvent(of: .value, with:
+                                    { snapshot in
+                                        
+                                        var tempUserData = UserData(id: "", name: "", email: "", image: "")
+                                        
+                                               if let dict = snapshot.value as? [String: Any],
+                                               let userId = dict["id"] as? String ?? "",
+                                               let username = dict["name"] as? String ?? "",
+                                               let userEmail = dict["email"] as? String ?? "",
+                                               let userImage = dict["image"] as? String ?? ""
+                                            {
+                                                    tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage))
+                                            }
+                                        
+                                        return completionHandler(tempUserData)
+                                    })
+    }
+    
+    // save chatBox Location to the user database
+    func setChatLocation(userId: String, chatId: String)
+    {
+        let db = Database.database().reference()
+        db.child("users").child(userId).child("messageLinks").child(chatId).setValue(chatId)
+    }
+    
+    //get all the message Locations from the given user
+    func getChatLocation(userId: String, completionHandler: @escaping (_ posts: [String]) -> ())
+    {
+        let postRef = Database.database().reference().child("users").child(userId).child("messageLinks")
+        postRef.observe(.value)
+        { snapshot in
+            
+            var tempMessageLink: [String] = []
+            
+            for child in snapshot.children
             {
-                if let document = document, document.exists
-                {
-                    let userId = document.get("id") as! String
-                    let username = document.get("name") as! String
-                    let userEmail = document.get("email") as! String
-                    let userImage = document.get("image") as! String
-                    //let friends = document.get("friends") as! [String]
-                    
-                    self.userDetails = (UserData(id: userId, name: username, email: userEmail, image: userImage))
-                }
+                if let childSnapshot = child as? DataSnapshot,
+                    let dict = childSnapshot.value as? String ?? ""
+                    {
+                    tempMessageLink.append(dict)
+                    }
             }
-            else
-            {
-                print(error?.localizedDescription as Any)
-                return
-            }
+            return completionHandler(tempMessageLink)
         }
     }
 }

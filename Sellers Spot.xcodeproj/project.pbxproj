@@ -142,7 +142,7 @@
 		6121F0F3250A82550062503C = {
 			isa = PBXGroup;
 			children = (
-				614C9919253F6B57007E7BA5 /* TimeStamp.swift */,
+				61F318CA254740F400CED8B2 /* Misc */,
 				615DE38C250BBE9500E59B24 /* SignIn */,
 				6121F137250A82840062503C /* Home */,
 				6121F13D250A82840062503C /* Messages */,
@@ -171,11 +171,9 @@
 			isa = PBXGroup;
 			children = (
 				6121F0FF250A82550062503C /* AppDelegate.swift */,
-				615DBE7D25306E320078B109 /* TextLimiter.swift */,
 				6121F101250A82550062503C /* SceneDelegate.swift */,
 				6121F130250A82730062503C /* Assets.xcassets */,
 				6121F131250A82730062503C /* ContentView.swift */,
-				61649D1325441430006FB72E /* CustomTabView.swift */,
 				6121F10A250A82580062503C /* LaunchScreen.storyboard */,
 				6121F14D250AA9F10062503C /* GoogleService-Info.plist */,
 				6121F10D250A82580062503C /* Info.plist */,
@@ -286,6 +284,16 @@
 				6145F9942517315600D5784E /* ImagePicker */,
 			);
 			path = "New Post";
+			sourceTree = "<group>";
+		};
+		61F318CA254740F400CED8B2 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				614C9919253F6B57007E7BA5 /* TimeStamp.swift */,
+				615DBE7D25306E320078B109 /* TextLimiter.swift */,
+				61649D1325441430006FB72E /* CustomTabView.swift */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		869F154FD21481545EB98818 /* Pods */ = {

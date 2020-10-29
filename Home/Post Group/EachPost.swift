@@ -22,7 +22,7 @@ struct EachPost: View
     
     @State var postDeleted: Bool = false
     
-    var posts: PostDetails
+    var post: PostDetails
     
     @ObservedObject var postObserver = PostObserver()
     
@@ -36,7 +36,7 @@ struct EachPost: View
                 {
                     VStack(alignment: .leading, spacing: 2)
                     {
-                        WebImage(url: URL(string: posts.userImage))
+                        WebImage(url: URL(string: post.userImage))
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -46,7 +46,7 @@ struct EachPost: View
                             .shadow(radius: 5)
                             .padding(.horizontal)
                         
-                        Text(posts.userName)
+                        Text(post.userName)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -55,7 +55,7 @@ struct EachPost: View
                     
                     VStack(alignment: .trailing, spacing: 5)
                     {
-                        if posts.userId == userId   // if this is my post then only I can delete it
+                        if post.userId == userId   // if this is my post then only I can delete it
                         {
                             Button(action: deletePost)
                             {
@@ -66,19 +66,19 @@ struct EachPost: View
                             }
                         }
                         
-                        Text(posts.postDate.timeAgoDisplayed())
+                        Text(post.postDate.timeAgoDisplayed())
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
                 }
                 
-                Text(posts.postName)
+                Text(post.postName)
                     .font(.headline)
                     .fontWeight(.heavy)
                     .frame(alignment: .leading)
                     .padding()
                 
-                Text(posts.postDescription)
+                Text(post.postDescription)
                     .font(.subheadline)
                     .padding()
                 
@@ -86,9 +86,9 @@ struct EachPost: View
                 {
                     HStack(spacing: 10)
                     {
-                        ForEach(0..<posts.postImage.count)
+                        ForEach(0..<post.postImage.count)
                         { i in
-                            WebImage(url: URL(string: self.posts.postImage[i]))
+                            WebImage(url: URL(string: (self.post.postImage[i] ?? "")))
                                 .resizable()
                                 .frame(width: 200, height: 200)
                                 .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
@@ -97,6 +97,7 @@ struct EachPost: View
                     }
                 }
                 
+                // Like, Dislike Button
                 HStack
                 {
                     Button(action: didLike)
@@ -129,18 +130,18 @@ struct EachPost: View
                             Text("\(dislikes) dislikes")
                                 .padding(10)
                         }
-                        
                     }
                     
                     Spacer()
                     
-                    Text("Price: $\(posts.postPrice)")
+                    Text("Price: $\(post.postPrice)")
                         .foregroundColor(.primary)
                     
                 }
                 .font(Font.subheadline.weight(.bold))
                 .foregroundColor(Color(UIColor.systemBlue))
                 
+                //Buy, Message Button
                 HStack
                 {
                     Button(action: {
@@ -180,16 +181,19 @@ struct EachPost: View
             
             .onAppear()
             {
-                if posts.postLike.contains(userId)
-                {
+                likes = post.postLike.count
+                dislikes = post.postDislike.count
+                
+                if post.postLike.contains(userId)
+                {   // fetch if user already liked
                     likePressed = true
-                    self.likes = posts.postLike.count
+                    self.likes = post.postLike.count
                 }
                 
-                if posts.postDislike.contains(userId)
+                if post.postDislike.contains(userId)
                 {
                     dislikePressed = true
-                    self.dislikes = posts.postDislike.count
+                    self.dislikes = post.postDislike.count
                 }
             }
         }
@@ -204,23 +208,23 @@ struct EachPost: View
     {
         if likePressed
         {
-            postObserver.removeLikeDislike(postId: posts.id, userId: userId, like: true, dislike: false)
+            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
             likePressed = false
             likes -= 1
         }
         else if dislikePressed
         {
-            postObserver.removeLikeDislike(postId: posts.id, userId: userId, like: false, dislike: true)
+            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
             dislikePressed = false
             dislikes -= 1
             
-            postObserver.addLikeDislike(postId: posts.id, userId: userId, like: true, dislike: false)
+            postObserver.addLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
             likePressed = true
             likes += 1
         }
         else
         {
-            postObserver.addLikeDislike(postId: posts.id, userId: userId, like: true, dislike: false)
+            postObserver.addLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
             likePressed = true
             likes += 1
         }
@@ -231,23 +235,23 @@ struct EachPost: View
     {
         if dislikePressed
         {
-            postObserver.removeLikeDislike(postId: posts.id, userId: userId, like: false, dislike: true)
+            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
             dislikePressed = false
             dislikes -= 1
         }
         else if likePressed
         {
-            postObserver.removeLikeDislike(postId: posts.id, userId: userId, like: true, dislike: false)
+            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
             likePressed = false
             likes -= 1
             
-            postObserver.addLikeDislike(postId: posts.id, userId: userId, like: false, dislike: true)
+            postObserver.addLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
             dislikePressed = true
             dislikes += 1
         }
         else
         {
-            postObserver.addLikeDislike(postId: posts.id, userId: userId, like: false, dislike: true)
+            postObserver.addLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
             dislikePressed = true
             dislikes += 1
         }
@@ -258,13 +262,13 @@ struct EachPost: View
     {
         // delete the post
         let database = Database.database().reference()
-        database.child("posts").child(posts.id).setValue(nil)
+        database.child("posts").child(post.id).setValue(nil)
         
         // delete the images
         let storage = Storage.storage().reference()
-        for i in 0..<posts.postImage.count
+        for i in 0..<post.postImage.count
         {
-            storage.child("ImagesOfPosts/\(posts.userId)/\(posts.id)/image\(i).jpeg").delete { error in
+            storage.child("ImagesOfPosts/\(post.userId)/\(post.id)/image\(i).jpeg").delete { error in
                 if error != nil {
                     print("Error deleting image")
                 } else {

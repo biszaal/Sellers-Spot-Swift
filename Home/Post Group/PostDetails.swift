@@ -7,7 +7,7 @@ struct PostDetails: Identifiable, Equatable
     var userName: String
     var userImage: String
     var postName: String
-    var postImage: [String]
+    var postImage: [String?]
     var postDescription: String
     var postPrice: String
     var postLocation: String
