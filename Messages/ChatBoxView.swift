@@ -2,64 +2,76 @@ import SwiftUI
 
 struct ChatBoxView: View
 {
-    var userId: String
-    var sendToId: String
+    var chatId: String
     
-    @State var myImage: String = ""
-    @State var senderImage:String = ""
+    @State var messagesData = [MessagesDataType]()
+    
+    @State var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
+    @State var theirId: String = ""
+    @State var myImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
+    @State var theirImage: String = ""
+    @State var theirName: String = ""
     
     @State var typedMessage: String = ""
-    @ObservedObject var message = MessagesObserver()
-    @ObservedObject var user = UserDataObserver()
+    @ObservedObject var messageObserver = MessagesObserver()
+    @ObservedObject var userObserver = UserDataObserver()
     
     @State var value: CGFloat = 0
-    @State var numberOfMessages: Int = 10
     @State var showSeeMore: Bool = true
     @State var openingViewFirstTime: Bool = false
+    @State var keyboardHeight: CGFloat = 0
     
     var body: some View
     {
+        
         ScrollViewReader
         {   reader in
             
             VStack
             {
-                ScrollView(showsIndicators: false)
+                VStack
                 {
-                    Button(action:
-                            {
-                                numberOfMessages += 3
-                                //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
-                            })
+                    ScrollView(showsIndicators: false)
                     {
-                        Text("See more...")
-                            .font(.caption)
-                            .padding()
-                            .background(Color(UIColor.secondarySystemBackground))
-                            .cornerRadius(30)
+                        Button(action:
+                                {
+                                    batchFetching()
+                                })
+                        {
+                            Text("See more...")
+                                .font(.caption)
+                                .padding()
+                                .background(Color(UIColor.secondarySystemBackground))
+                                .cornerRadius(30)
+                        }
+                        ForEach(self.messagesData, id: \.self)
+                        { each in
+                            MessageRow(theirImage: self.theirImage, theirId: each.id, message: each.message)
+                        }
+                        
+                        .onAppear()
+                        {
+                            if openingViewFirstTime
+                            {       // scroll to the bottom when open
+                                reader.scrollTo(messagesData.last!.id, anchor: .bottom)
+                                openingViewFirstTime = false
+                            }
+                        }
+                        
+                        Spacer()
+                            .frame(height: keyboardHeight)
                     }
                     
-                    ForEach(message.messages)
-                    { each in
-                        MessageRow(userId: each.id, sendToId: each.sendToId, message: each.message)
-                        //                        Text(each.message)
-                    }
                     .onAppear()
                     {
-                        if openingViewFirstTime
-                        {       // scroll to the bottom when open
-                            reader.scrollTo(message.messages.last!.id, anchor: .bottom)
-                            openingViewFirstTime = false
+                        openingViewFirstTime = true
+                        
+                        messageObserver.fetchData(chatId: self.chatId)
+                        { newMessages in
+                            self.messagesData = newMessages
                         }
                     }
                 }
-                .onAppear()
-                {
-                    openingViewFirstTime = true
-                    //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
-                }
-                
-                Spacer()
                 
                 HStack
                 {
@@ -72,29 +84,60 @@ struct ChatBoxView: View
                     Button(action:
                             {
                                 
-                                self.message.addMessage(chatId: "", userId: userId, SendToId: sendToId, message: typedMessage)
+                                self.messageObserver.addMessage(chatId: self.chatId, theirId: self.theirId, message: self.typedMessage)
                                 self.typedMessage = ""
-                                reader.scrollTo(message.messages.last?.id, anchor: .bottom)
-                                //message.fetchData(numberOfMessages, firstId: userId, secondId: sendToId)
+                                reader.scrollTo(messagesData.last?.id, anchor: .bottom)
+                                messageObserver.fetchData(chatId: self.chatId)
+                                { messageData in
+                                    self.messagesData = messageData
+                                }
                             })
                     {
                         Text("Send")
                     }
                 }
-                .navigationBarTitle(Text(sendToId), displayMode: .inline)
-                
-                .onTapGesture
-                {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
-                    {
-                        withAnimation
-                        {
-                            reader.scrollTo(message.messages.last?.id, anchor: .bottom)
-                        }
-                    }
-                }
+                .navigationBarTitle(self.theirName, displayMode: .inline)
             }
         }
         .padding()
+        
+        .onAppear()
+        {
+            self.batchFetching()
+            
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
+            { (notification) in
+                guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+                
+                self.keyboardHeight = keyboardFrame.height
+            }
+            
+//            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
+//            { (notification) in
+//
+//                self.keyboardHeight = 0
+//            }
+        }
+        
+    }
+    
+    func batchFetching()
+    {
+        messageObserver.fetchData(chatId: self.chatId)
+        { messageData in
+            self.messagesData = messageData
+        }
+        
+        messageObserver.fetchList(chatId: self.chatId)
+        { message in
+            let tempId = message.userOne
+            self.theirId = tempId == myId ? message.userTwo : tempId
+            
+            userObserver.getUserDetails(id: self.theirId)
+            { user in
+                self.theirImage = user.image
+                self.theirName = user.name
+            }
+        }
     }
 }

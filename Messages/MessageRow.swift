@@ -1,13 +1,13 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MessageRow: View
 {
-    @State var myId: String = UserDefaults.standard.string(forKey: "username")!
+    @State var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
+    @State var myImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     
-    @State var userImage: String = ""
-    
-    var userId: String
-    var sendToId: String
+    var theirImage: String = ""
+    var theirId: String
     var message: String
     
     @ObservedObject var user = UserDataObserver()
@@ -16,7 +16,7 @@ struct MessageRow: View
     {
         HStack
         {
-            if myId == userId
+            if myId == theirId
             {
                 Spacer()
                 
@@ -25,7 +25,7 @@ struct MessageRow: View
                     .background(Color(UIColor.systemTeal))
                     .cornerRadius(6.0)
                 
-                Image(userImage)
+                WebImage(url: URL(string: myImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 20, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -36,7 +36,7 @@ struct MessageRow: View
             }
             else
             {
-                Image(userImage)
+                WebImage(url: URL(string: theirImage))
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 20, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -54,6 +54,5 @@ struct MessageRow: View
                 
             }
         }
-        
     }
 }

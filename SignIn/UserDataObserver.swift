@@ -66,9 +66,12 @@ class UserDataObserver: ObservableObject
                                                let userId = dict["id"] as? String ?? "",
                                                let username = dict["name"] as? String ?? "",
                                                let userEmail = dict["email"] as? String ?? "",
-                                               let userImage = dict["image"] as? String ?? ""
+                                               let userImage = dict["image"] as? String ?? "",
+                                               let userMessagesSnapshot = dict["messageLinks"] as? NSDictionary?,
+                                               let userMessages = userMessagesSnapshot?.allValues as? [String] ?? [],
+                                               let messageConnection = userMessagesSnapshot?.allKeys as? [String] ?? []
                                             {
-                                                    tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage))
+                                                    tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage, messageId: userMessages, messageConnection: messageConnection))
                                             }
                                         
                                         return completionHandler(tempUserData)
@@ -76,32 +79,12 @@ class UserDataObserver: ObservableObject
     }
     
     // save chatBox Location to the user database
-    func setChatLocation(userId: String, chatId: String)
+    func setChatLocation(userId: String, chatId: String, theirId: String)
     {
         let db = Database.database().reference()
-        db.child("users").child(userId).child("messageLinks").child(chatId).setValue(chatId)
+        db.child("users").child(userId).child("messageLinks").child(theirId).setValue(chatId)
     }
     
-    //get all the message Locations from the given user
-    func getChatLocation(userId: String, completionHandler: @escaping (_ posts: [String]) -> ())
-    {
-        let postRef = Database.database().reference().child("users").child(userId).child("messageLinks")
-        postRef.observe(.value)
-        { snapshot in
-            
-            var tempMessageLink: [String] = []
-            
-            for child in snapshot.children
-            {
-                if let childSnapshot = child as? DataSnapshot,
-                    let dict = childSnapshot.value as? String ?? ""
-                    {
-                    tempMessageLink.append(dict)
-                    }
-            }
-            return completionHandler(tempMessageLink)
-        }
-    }
 }
 
 struct UserData: Identifiable
@@ -110,5 +93,7 @@ struct UserData: Identifiable
     var name: String
     var email: String
     var image: String
+    var messageId: [String]?
+    var messageConnection: [String]?
     var friends: [String]?
 }

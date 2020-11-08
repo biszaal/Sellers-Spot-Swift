@@ -30,14 +30,11 @@ struct MessagesListView: View
             VStack
             {
                 Text(message.time.timeAgoDisplayed())
+                    .font(.caption)
                 
                 Spacer()
             }
         }
         .padding(.vertical)
-        
-        .onChange(of: message.message) { (_) in
-            print("Changed hai sathi hoo")
-        }
     }
 }

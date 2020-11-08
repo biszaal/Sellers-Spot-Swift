@@ -17,6 +17,7 @@ struct FriendsMain: View
     @ObservedObject var message = MessagesObserver()
     @ObservedObject var userObserver = UserDataObserver()
     
+    @State var messageConnection: [String] = []
     @State var users = [UserData]()
     @State var searchTextField: String = ""
     
@@ -61,7 +62,10 @@ struct FriendsMain: View
                 }
                 .onTapGesture
                 {
-                    message.addMessage(chatId: UUID().uuidString, userId: myId, SendToId: each.id, message: "Hello")
+                    if !messageConnection.contains(each.id)
+                    {
+                        message.addMessage(chatId: UUID().uuidString, theirId: each.id, message: "Hello")
+                    }
                 }
             }
         }
@@ -69,7 +73,7 @@ struct FriendsMain: View
         {
             userObserver.fetchData()
             { user in
-                users.append(contentsOf: user)
+                users = user
             }
         }
         
@@ -77,6 +81,14 @@ struct FriendsMain: View
             if searchTextField != ""
             {
                 print("not empty")
+            }
+        }
+        
+        .onAppear()
+        {
+            userObserver.getUserDetails(id: myId)
+            { user in
+                self.messageConnection = user.messageConnection ?? []
             }
         }
     }

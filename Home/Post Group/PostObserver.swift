@@ -14,7 +14,7 @@ class PostObserver: ObservableObject
         var queryRef : DatabaseQuery
         if (searchValue != "")
         {
-            queryRef = postsRef.queryOrdered(byChild: "postDate").queryStarting(atValue: searchValue)
+            queryRef = postsRef.queryOrdered(byChild: "postName").queryEqual(toValue: searchValue)
         } else
         {
             if lastPost == nil
