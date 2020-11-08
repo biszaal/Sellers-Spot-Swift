@@ -35,34 +35,49 @@ class MessagesObserver: ObservableObject
         }
     }
     
-    func fetchData(chatId: String, completionHandler: @escaping (_ messages: [MessagesDataType]) -> ())
+    func fetchData(chatId: String, messagesData: [MessagesDataType], completionHandler: @escaping (_ messages: [MessagesDataType]) -> ())
+    {
+        let db = Firestore.firestore()
+        let lastMessage = messagesData.first
+        let queryData: Query
+        if lastMessage == nil
         {
-            let db = Firestore.firestore()
-        db.collection("messages").document(chatId).collection("texts").order(by: "time").limit(toLast: 10).addSnapshotListener
-                { (snap, err) in
-    
-                var tempMessages = [MessagesDataType]()
-    
-                    if err != nil
-                    {
-                        print((err?.localizedDescription)!)
-                        return
-                    }
-    
-                    for i in snap!.documentChanges
-                    {
-                        if i.type == .added
-                        {
-                            let id = i.document.get("myId") as? String ?? ""
-                            let message = i.document.get("message") as? String ?? ""
-                            let time = i.document.get("time") as? String ?? ""
-    
-                            tempMessages.append(MessagesDataType(id: id, message: message, time: time))
-                        }
-                    }
-                return(completionHandler(tempMessages))
-            }
+            queryData = db.collection("messages").document(chatId).collection("texts").order(by: "time").limit(toLast: 10)
         }
+        else
+        {
+            let lastTimeStamp = lastMessage!.time.description
+            print(lastMessage!.message)
+            queryData = db.collection("messages").document(chatId).collection("texts").order(by: "time").end(at: [lastTimeStamp]).limit(toLast: 10)
+        }
+        queryData.addSnapshotListener
+        { (snap, err) in
+            
+            var tempMessages = [MessagesDataType]()
+            
+            if err != nil
+            {
+                print((err?.localizedDescription)!)
+                return
+            }
+            
+            for i in snap!.documentChanges
+            {
+                if i.type == .added
+                {
+                    let id = i.document.get("myId") as? String ?? ""
+                    let message = i.document.get("message") as? String ?? ""
+                    let time = i.document.get("time") as? String ?? ""
+                    
+                    if id != lastMessage?.id
+                    {
+                        tempMessages.append(MessagesDataType(id: id, message: message, time: time))
+                    }
+                }
+            }
+            return(completionHandler(tempMessages))
+        }
+    }
     
     func addMessage(chatId: String, theirId: String, message: String)
     {

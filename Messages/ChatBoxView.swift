@@ -21,6 +21,7 @@ struct ChatBoxView: View
     @State var openingViewFirstTime: Bool = false
     @State var keyboardHeight: CGFloat = 0
     
+    
     var body: some View
     {
         
@@ -35,7 +36,7 @@ struct ChatBoxView: View
                     {
                         Button(action:
                                 {
-                                    batchFetching()
+                                    batchFetching(seeMore: true)
                                 })
                         {
                             Text("See more...")
@@ -61,16 +62,6 @@ struct ChatBoxView: View
                         Spacer()
                             .frame(height: keyboardHeight)
                     }
-                    
-                    .onAppear()
-                    {
-                        openingViewFirstTime = true
-                        
-                        messageObserver.fetchData(chatId: self.chatId)
-                        { newMessages in
-                            self.messagesData = newMessages
-                        }
-                    }
                 }
                 
                 HStack
@@ -87,10 +78,6 @@ struct ChatBoxView: View
                                 self.messageObserver.addMessage(chatId: self.chatId, theirId: self.theirId, message: self.typedMessage)
                                 self.typedMessage = ""
                                 reader.scrollTo(messagesData.last?.id, anchor: .bottom)
-                                messageObserver.fetchData(chatId: self.chatId)
-                                { messageData in
-                                    self.messagesData = messageData
-                                }
                             })
                     {
                         Text("Send")
@@ -103,6 +90,7 @@ struct ChatBoxView: View
         
         .onAppear()
         {
+            openingViewFirstTime = true
             self.batchFetching()
             
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
@@ -121,11 +109,18 @@ struct ChatBoxView: View
         
     }
     
-    func batchFetching()
+    func batchFetching(seeMore: Bool? = false)
     {
-        messageObserver.fetchData(chatId: self.chatId)
+        //fetching each text messages
+        messageObserver.fetchData(chatId: self.chatId, messagesData: self.messagesData)
         { messageData in
-            self.messagesData = messageData
+            if seeMore!
+            {
+                self.messagesData.insert(contentsOf: messageData, at: 0)
+            } else
+            {
+                self.messagesData.append(contentsOf: messageData)
+            }
         }
         
         messageObserver.fetchList(chatId: self.chatId)

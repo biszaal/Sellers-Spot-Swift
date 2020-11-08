@@ -264,7 +264,7 @@ struct EachPost: View
         let database = Database.database().reference()
         database.child("posts").child(post.id).setValue(nil)
         
-        // delete the images
+        // delete every images
         let storage = Storage.storage().reference()
         for i in 0..<post.postImage.count
         {

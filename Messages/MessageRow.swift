@@ -32,7 +32,6 @@ struct MessageRow: View
                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     .overlay(
                         Circle().stroke(Color.blue, lineWidth: 1))
-                    .shadow(radius: 5)
             }
             else
             {
@@ -43,7 +42,6 @@ struct MessageRow: View
                     .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     .overlay(
                         Circle().stroke(Color.blue, lineWidth: 1))
-                    .shadow(radius: 5)
                 
                 Text(message)
                     .padding(8)
