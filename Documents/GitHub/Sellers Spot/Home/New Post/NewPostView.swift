@@ -133,15 +133,31 @@ struct NewPostView: View
                         PostUserInfoView(username: username, userEmail: userEmail, userImage: userImage)
                             .frame(alignment: .center)
                         
-                        Text("Name")
-                        TextField("Write the name of your product.", text: $postName)
-                            .frame(height: 50)
-                            .padding()
-                            .background(Color.secondary.opacity(0.1))
-                            .cornerRadius(10)
-                            .onReceive(Just(postName)) { (newValue: String) in
-                                self.postName = String(newValue.prefix(50))
-                            }
+                        Group
+                        {
+                            Text("Name")
+                            TextField("Write the name of your product.", text: $postName)
+                                .frame(height: 50)
+                                .padding()
+                                .background(Color.secondary.opacity(0.1))
+                                .cornerRadius(10)
+                                .onReceive(Just(postName)) { (newValue: String) in
+                                    self.postName = String(newValue.prefix(50))
+                                }
+                        }
+                        
+                        Group
+                        {
+                            Text("Location")
+                            TextField("Location of the product.", text: $postLocation)
+                                .frame(height: 50)
+                                .padding()
+                                .background(Color.secondary.opacity(0.1))
+                                .cornerRadius(10)
+                                .onReceive(Just(postLocation)) { (newValue: String) in
+                                    self.postLocation = String(newValue.prefix(100))
+                                }
+                        }
                         
                         HStack
                         {
@@ -166,20 +182,25 @@ struct NewPostView: View
                                 self.postDescription = String(newValue.prefix(1000))
                             }
                         
-                        Text("Images")
-                        PostImageView(image: self.$storeImages)
+                        Group
+                        {
+                            Text("Images")
+                            PostImageView(image: self.$storeImages)
+                        }
                         
-                        Text("Price")
-                        TextField("Input the price.", text: self.$postPrice)
-                            .frame(height: 30)
-                            .keyboardType(.numberPad)
-                            .padding()
-                            .background(Color.secondary.opacity(0.1))
-                            .cornerRadius(10)
-                            .onReceive(Just(postPrice)) { (newValue: String) in
-                                self.postPrice = String(newValue.prefix(10))
-                            }
-                        
+                        Group
+                        {
+                            Text("Price")
+                            TextField("Input the price.", text: self.$postPrice)
+                                .frame(height: 30)
+                                .keyboardType(.numberPad)
+                                .padding()
+                                .background(Color.secondary.opacity(0.1))
+                                .cornerRadius(10)
+                                .onReceive(Just(postPrice)) { (newValue: String) in
+                                    self.postPrice = String(newValue.prefix(10))
+                                }
+                        }
                     }
                     .padding()
                 }
@@ -191,12 +212,12 @@ struct NewPostView: View
     
     func addPost()
     {
-            // Storing post the firebase Cloud
-            self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
-            print("Done")
-            
-            isUploading = false     // hide uploading bar
-            
-            storeImages.removeAll()     // erasing the images picked from image picker after posting
+        // Storing post the firebase Cloud
+        self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postLocation: postLocation, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
+        print("Done")
+        
+        isUploading = false     // hide uploading bar
+        
+        storeImages.removeAll()     // erasing the images picked from image picker after posting
     }
 }

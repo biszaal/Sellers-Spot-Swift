@@ -34,22 +34,34 @@ struct EachPost: View
             {
                 HStack
                 {
-                    HStack(spacing: 2)
+                    VStack(alignment: .leading)
                     {
-                        WebImage(url: URL(string: post.userImage))
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                            .overlay(
-                                Circle().stroke(Color.blue, lineWidth: 1))
-                            .shadow(radius: 5)
-                            .padding(.horizontal)
+                        HStack(spacing: 2)
+                        {
+                            WebImage(url: URL(string: post.userImage))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                .overlay(
+                                    Circle().stroke(Color.blue, lineWidth: 1))
+                                .shadow(radius: 5)
+                            
+                            Text(post.userName)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                         
-                        Text(post.userName)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        HStack
+                        {
+                            Image(systemName: "mappin.and.ellipse")
+                            Text(post.postLocation)
+                        }
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        
                     }
+                    .padding(.horizontal, 10)
                     
                     Spacer()
                     
@@ -78,7 +90,6 @@ struct EachPost: View
                     .frame(alignment: .leading)
                     .padding(.horizontal)
                     .padding(.vertical, 5)
-                
                 Text(post.postDescription)
                     .font(.subheadline)
                     .padding(.horizontal)
@@ -159,6 +170,7 @@ struct EachPost: View
                             .background(self.productSold ? .secondary : Color("ButtonColor"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .disabled(self.productSold)
                     .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                     
                     Spacer()
@@ -174,6 +186,7 @@ struct EachPost: View
                             .background(self.productSold ? .secondary : Color("ButtonColor"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .disabled(self.productSold)
                     .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                 }
             }

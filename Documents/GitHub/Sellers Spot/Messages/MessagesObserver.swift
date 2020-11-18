@@ -6,97 +6,77 @@ class MessagesObserver: ObservableObject
     
     var userObserver = UserDataObserver()
     
-    func fetchList(chatId: String, completionHandler: @escaping (_ messages: Messages) -> ())
+    
+    // get last tetx to show in the outside of chatbox
+    func lastText(chatId: String, completionHandler: @escaping (_ message: MessagesDataType) -> ())
     {
-        let db = Firestore.firestore()
-        db.collection("messages").document(chatId).addSnapshotListener
-        { (snap, err) in
+        let messagesRef = Database.database().reference().child("messages").child(chatId)
+        let quertRef = messagesRef.queryOrdered(byChild: "time").queryLimited(toLast: 1)
+        
+        quertRef.observe(.value)
+        { snap in
             
-            var tempMessageList = Messages(id: "", userOne: "", userTwo: "", message: "", time: Date())
+            var tempMessage: MessagesDataType = MessagesDataType(id: "", userId: "", message: "", time: "")
             
-            if err != nil
+            for child in snap.children
             {
-                print((err?.localizedDescription)!)
-                return
+                if let childSnapshot = child as? DataSnapshot,
+                   let dict = childSnapshot.value as? [String:Any],
+                   let id = childSnapshot.key as String? ?? "",
+                   let userId = dict["myId"] as? String ?? "",
+                   let message = dict["message"] as? String ?? "",
+                   let time = dict["time"] as? String ?? ""
+                {
+                    tempMessage = MessagesDataType(id: id, userId: userId, message: message, time: time)
+                }
             }
-            let chatId = snap?.get("chatId") as? String ?? ""
-            let userOne = snap?.get("userOne") as? String ?? ""
-            let userTwo = snap?.get("userTwo") as? String ?? ""
-            let message = snap?.get("recentMessage") as? String ?? ""
-            let date = snap?.get("time") as? String ?? ""
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-            let time = dateFormatter.date(from: date) ?? Date()
-            
-            tempMessageList = Messages(id: chatId, userOne: userOne, userTwo: userTwo, message: message, time: time)
-            
-            return completionHandler(tempMessageList)
+            return completionHandler(tempMessage)
         }
     }
     
     func fetchData(chatId: String, messagesData: [MessagesDataType], completionHandler: @escaping (_ messages: [MessagesDataType]) -> ())
     {
-        let db = Firestore.firestore()
+        let messagesRef = Database.database().reference().child("messages").child(chatId)
         let lastMessage = messagesData.first
-        let queryData: Query
+        var queryRef : DatabaseQuery
         if lastMessage == nil
         {
-            queryData = db.collection("messages").document(chatId).collection("texts").order(by: "time").limit(toLast: 10)
+            queryRef = messagesRef.queryOrdered(byChild: "time").queryLimited(toLast: 20)
         }
         else
         {
             let lastTimeStamp = lastMessage!.time.description
-            print(lastMessage!.message)
-            queryData = db.collection("messages").document(chatId).collection("texts").order(by: "time").end(at: [lastTimeStamp]).limit(toLast: 10)
+            queryRef = messagesRef.queryOrdered(byChild: "time").queryEnding(atValue: lastTimeStamp).queryLimited(toLast: 20)
         }
-        queryData.addSnapshotListener
-        { (snap, err) in
+        queryRef.observeSingleEvent(of: .value, with: { snap in
             
             var tempMessages = [MessagesDataType]()
             
-            if err != nil
+            for child in snap.children
             {
-                print((err?.localizedDescription)!)
-                return
-            }
-            
-            for i in snap!.documentChanges
-            {
-                if i.type == .added
+                if let childSnapshot = child as? DataSnapshot,
+                   let dict = childSnapshot.value as? [String:Any],
+                   let id = childSnapshot.key as String? ?? "",
+                   let userId = dict["myId"] as? String ?? "",
+                   let message = dict["message"] as? String ?? "",
+                   let time = dict["time"] as? String ?? ""
                 {
-                    let id = i.document.get("myId") as? String ?? ""
-                    let message = i.document.get("message") as? String ?? ""
-                    let time = i.document.get("time") as? String ?? ""
-                    
                     if id != lastMessage?.id
                     {
-                        tempMessages.append(MessagesDataType(id: id, message: message, time: time))
+                        tempMessages.append(MessagesDataType(id: id, userId: userId, message: message, time: time))
                     }
                 }
             }
             return(completionHandler(tempMessages))
-        }
+        })
     }
     
     func addMessage(chatId: String, theirId: String, message: String)
     {
-        let db = Firestore.firestore()
+        let db = Database.database().reference()
         
         // save for message List
-        db.collection("messages").document(chatId).setData(["chatId": chatId, "userOne": self.myId, "userTwo": theirId, "recentMessage": message, "time": Date().rnDate()])
-        { (err) in
-            
-            if err != nil
-            {
-                print((err?.localizedDescription)!)
-                return
-            }
-            print("message sent")
-        }
-        
-        // save for chat box
-        db.collection("messages").document(chatId).collection("texts").addDocument(data: ["myId" : self.myId, "message": message, "time": Date().rnDate()])
+        db.child("messages").child(chatId).childByAutoId().setValue(["myId" : self.myId, "message": message, "time": Date().rnDate()])
         
         //save to both user's profile
         userObserver.setChatLocation(userId: myId, chatId: chatId, theirId: theirId)
@@ -108,16 +88,7 @@ class MessagesObserver: ObservableObject
 struct MessagesDataType: Identifiable, Equatable, Hashable
 {
     var id: String
+    var userId: String
     var message: String
     var time: String
-}
-
-
-struct Messages: Identifiable, Equatable
-{
-    var id: String
-    var userOne: String
-    var userTwo: String
-    var message: String
-    var time: Date
 }

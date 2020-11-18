@@ -28,7 +28,7 @@ admin.initializeApp(functions.config().firebase);
 // })
 // ;
 
-exports.sendMessage = functions.firestore.document('messages/{chatId}').onCreate(event =>
+exports.sendMessage = functions.database.document('messages/{chatId}').onCreate(event =>
     {
         const docId = event.params.chatId;
 
