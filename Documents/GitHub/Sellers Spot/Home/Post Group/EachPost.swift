@@ -34,34 +34,22 @@ struct EachPost: View
             {
                 HStack
                 {
-                    VStack(alignment: .leading)
+                    VStack(alignment: .leading, spacing: 2)
                     {
-                        HStack(spacing: 2)
-                        {
-                            WebImage(url: URL(string: post.userImage))
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                                .overlay(
-                                    Circle().stroke(Color.blue, lineWidth: 1))
-                                .shadow(radius: 5)
-                            
-                            Text(post.userName)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        WebImage(url: URL(string: post.userImage))
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                            .overlay(
+                                Circle().stroke(Color.blue, lineWidth: 1))
+                            .shadow(radius: 5)
+                            .padding(.horizontal)
                         
-                        HStack
-                        {
-                            Image(systemName: "mappin.and.ellipse")
-                            Text(post.postLocation)
-                        }
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        
+                        Text(post.userName)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.horizontal, 10)
                     
                     Spacer()
                     
@@ -88,11 +76,11 @@ struct EachPost: View
                     .font(.headline)
                     .fontWeight(.heavy)
                     .frame(alignment: .leading)
-                    .padding(.horizontal)
-                    .padding(.vertical, 5)
+                    .padding()
+                
                 Text(post.postDescription)
                     .font(.subheadline)
-                    .padding(.horizontal)
+                    .padding()
                 
                 ScrollView(.horizontal, showsIndicators: false)
                 {
@@ -102,10 +90,9 @@ struct EachPost: View
                         { i in
                             WebImage(url: URL(string: (self.post.postImage[i] ?? "")))
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
                                 .frame(width: 200, height: 200)
-                                .background(Color.secondary.colorInvert().opacity(0.5))
-                                .cornerRadius(10)
+                                .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                .aspectRatio(contentMode: .fill)
                         }
                     }
                 }
@@ -170,7 +157,6 @@ struct EachPost: View
                             .background(self.productSold ? .secondary : Color("ButtonColor"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
-                    .disabled(self.productSold)
                     .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                     
                     Spacer()
@@ -186,7 +172,6 @@ struct EachPost: View
                             .background(self.productSold ? .secondary : Color("ButtonColor"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
-                    .disabled(self.productSold)
                     .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                 }
             }

@@ -32,6 +32,7 @@ class MessagesObserver: ObservableObject
             }
             return completionHandler(tempMessage)
         }
+        
     }
     
     func fetchData(chatId: String, messagesData: [MessagesDataType], completionHandler: @escaping (_ messages: [MessagesDataType]) -> ())

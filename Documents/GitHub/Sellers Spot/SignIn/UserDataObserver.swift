@@ -67,9 +67,9 @@ class UserDataObserver: ObservableObject
                                                let username = dict["name"] as? String ?? "",
                                                let userEmail = dict["email"] as? String ?? "",
                                                let userImage = dict["image"] as? String ?? "",
-                                               let messageConnectionSnapshot = dict["messageLinks"] as? NSDictionary?,
-                                               let messageConnection = messageConnectionSnapshot?.allValues as? [String] ?? [],
-                                               let userMessages = messageConnectionSnapshot?.allKeys as? [String] ?? []
+                                               let userMessagesSnapshot = dict["messageLinks"] as? NSDictionary?,
+                                               let userMessages = userMessagesSnapshot?.allValues as? [String] ?? [],
+                                               let messageConnection = userMessagesSnapshot?.allKeys as? [String] ?? []
                                             {
                                                     tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage, messageId: userMessages, messageConnection: messageConnection))
                                             }
@@ -82,7 +82,7 @@ class UserDataObserver: ObservableObject
     func setChatLocation(userId: String, chatId: String, theirId: String)
     {
         let db = Database.database().reference()
-        db.child("users").child(userId).child("messageLinks").child(chatId).setValue(theirId)
+        db.child("users").child(userId).child("messageLinks").child(theirId).setValue(chatId)
     }
     
 }

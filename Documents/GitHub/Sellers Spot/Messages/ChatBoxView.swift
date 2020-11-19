@@ -2,12 +2,12 @@ import SwiftUI
 
 struct ChatBoxView: View
 {
-    var theirId: String
     var chatId: String
     
     @State var messagesData = [MessagesDataType]()
     
     @State var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
+    @State var theirId: String = ""
     @State var myImage: String = UserDefaults.standard.string(forKey: "userImage") ?? ""
     @State var theirImage: String = ""
     @State var theirName: String = ""
@@ -18,8 +18,9 @@ struct ChatBoxView: View
     
     @State var value: CGFloat = 0
     @State var showSeeMore: Bool = true
+    @State var openingViewFirstTime: Bool = false
     @State var keyboardHeight: CGFloat = 0
-    @State var keyboardOn: Bool = false     // check if keyboard is appeared or not
+    
     
     var body: some View
     {
@@ -46,12 +47,16 @@ struct ChatBoxView: View
                         }
                         ForEach(self.messagesData, id: \.self)
                         { each in
-                            MessageRow(userId: each.userId, message: each.message, userImage: self.theirImage)
+                            MessageRow(theirImage: self.theirImage, theirId: each.id, message: each.message)
                         }
                         
                         .onAppear()
-                        {      // scroll to the bottom when open
+                        {
+                            if openingViewFirstTime
+                            {       // scroll to the bottom when open
                                 reader.scrollTo(messagesData.last!.id, anchor: .bottom)
+                                openingViewFirstTime = false
+                            }
                         }
                         
                         Spacer()
@@ -69,9 +74,10 @@ struct ChatBoxView: View
                     
                     Button(action:
                             {
+                                
                                 self.messageObserver.addMessage(chatId: self.chatId, theirId: self.theirId, message: self.typedMessage)
                                 self.typedMessage = ""
-                                reader.scrollTo(messagesData.first?.id, anchor: .bottom)
+                                reader.scrollTo(messagesData.last?.id, anchor: .bottom)
                             })
                     {
                         Text("Send")
@@ -79,40 +85,26 @@ struct ChatBoxView: View
                 }
                 .navigationBarTitle(self.theirName, displayMode: .inline)
             }
-            
-            // hide keyboard on drag gesture
-            .gesture(DragGesture().onChanged(
-                        { _ in
-                            if keyboardOn
-                            {
-                                UIApplication.shared.endEditing()
-                            }
-                        }))
         }
         .padding()
         
         .onAppear()
         {
+            openingViewFirstTime = true
             self.batchFetching()
             
             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
             { (notification) in
                 guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
                 
-                self.keyboardOn = true
                 self.keyboardHeight = keyboardFrame.height
             }
             
-            
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
-            { (notification) in
-
-                self.keyboardOn = false
-                self.keyboardHeight = 0
-            }
-            
-            print("their id \(theirId)")
-            print("my id \(myId)")
+//            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
+//            { (notification) in
+//
+//                self.keyboardHeight = 0
+//            }
         }
         
     }
@@ -122,18 +114,25 @@ struct ChatBoxView: View
         //fetching each text messages
         messageObserver.fetchData(chatId: self.chatId, messagesData: self.messagesData)
         { messageData in
-            self.messagesData = messageData
-            
-            messageObserver.lastText(chatId: self.chatId)
-            { message in
-                self.messagesData.append(message)
+            if seeMore!
+            {
+                self.messagesData.insert(contentsOf: messageData, at: 0)
+            } else
+            {
+                self.messagesData.append(contentsOf: messageData)
             }
         }
         
-        userObserver.getUserDetails(id: self.theirId)
-        { user in
-            self.theirName = user.name
-            self.theirImage = user.image
+        messageObserver.fetchList(chatId: self.chatId)
+        { message in
+            let tempId = message.userOne
+            self.theirId = tempId == myId ? message.userTwo : tempId
+            
+            userObserver.getUserDetails(id: self.theirId)
+            { user in
+                self.theirImage = user.image
+                self.theirName = user.name
+            }
         }
     }
 }

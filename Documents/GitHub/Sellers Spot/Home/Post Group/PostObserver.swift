@@ -42,7 +42,6 @@ class PostObserver: ObservableObject
                                                    let username = dict["username"] as? String? ?? "",
                                                    let userImage = dict["userImage"] as? String? ?? "",
                                                    let productName = dict["postName"] as? String? ?? "",
-                                                   let productLocation = dict["postLocation"] as? String? ?? "",
                                                    let productImage = dict["postImage"] as? [String] ?? [],
                                                    let productDescription = dict["postDescription"] as? String? ?? "",
                                                    let productPrice = dict["postPrice"] as? String? ?? "",
@@ -57,7 +56,7 @@ class PostObserver: ObservableObject
                                                         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
                                                         let postedDate = self.dateFormatter.date(from:postedDate) ?? Date()
                                                         
-                                                        tempPosts.insert(PostDetails(id: id, userId: userId, userName: username, userImage: userImage, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: productPrice, postLocation: productLocation, postDate: postedDate, postLike: postLike, postDislike: postDislike), at: 0)
+                                                        tempPosts.insert(PostDetails(id: id, userId: userId, userName: username, userImage: userImage, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: productPrice, postLocation: "", postDate: postedDate, postLike: postLike, postDislike: postDislike), at: 0)
                                                     }
                                                 }
                                             }
@@ -69,10 +68,10 @@ class PostObserver: ObservableObject
     }
     
     // Adding post to the firebase real-time database
-    func addPost(id: String, userId: String, username: String, userImage: String, postName: String, postLocation: String, postImage: [String], postDescription: String, postPrice: String)
+    func addPost(id: String, userId: String, username: String, userImage: String, postName: String, postImage: [String], postDescription: String, postPrice: String)
     {
         let posts = Database.database().reference()
-        posts.child("posts").child(id).setValue(["id" : id, "userId": userId, "username": username, "userImage": userImage, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": postLocation ,"postDate": Date().rnDate(), "postLike": [], "postDislike": []])
+        posts.child("posts").child(id).setValue(["id" : id, "userId": userId, "username": username, "userImage": userImage, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": "" ,"postDate": Date().rnDate(), "postLike": [], "postDislike": []])
     }
     
     
