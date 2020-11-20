@@ -96,6 +96,7 @@
 		615DE38D250BBEB800E59B24 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		61649D1325441430006FB72E /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		6186637F2511FCA0002BD453 /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
+		61957DDA255ACD4C001B18CE /* Sellers Spot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sellers Spot.entitlements"; sourceTree = "<group>"; };
 		61A84DBC250CB49600ED1441 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		61C16BBD2543546B00882CE7 /* MessagesMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesMain.swift; sourceTree = "<group>"; };
 		61C16BBE2543546B00882CE7 /* MessagesObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesObserver.swift; sourceTree = "<group>"; };
@@ -170,10 +171,11 @@
 		6121F0FE250A82550062503C /* Sellers Spot */ = {
 			isa = PBXGroup;
 			children = (
+				61957DDA255ACD4C001B18CE /* Sellers Spot.entitlements */,
 				6121F0FF250A82550062503C /* AppDelegate.swift */,
 				6121F101250A82550062503C /* SceneDelegate.swift */,
-				6121F130250A82730062503C /* Assets.xcassets */,
 				6121F131250A82730062503C /* ContentView.swift */,
+				6121F130250A82730062503C /* Assets.xcassets */,
 				6121F10A250A82580062503C /* LaunchScreen.storyboard */,
 				6121F14D250AA9F10062503C /* GoogleService-Info.plist */,
 				6121F10D250A82580062503C /* Info.plist */,
@@ -791,6 +793,7 @@
 			baseConfigurationReference = 0A86A223B64908B2E26F09A8 /* Pods-Sellers Spot.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Sellers Spot/Sellers Spot.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Sellers Spot/Preview Content\"";
 				DEVELOPMENT_TEAM = HG4G2ZMGV8;
@@ -812,6 +815,7 @@
 			baseConfigurationReference = 25A987ED51DD5D509DB8438B /* Pods-Sellers Spot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Sellers Spot/Sellers Spot.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Sellers Spot/Preview Content\"";
 				DEVELOPMENT_TEAM = HG4G2ZMGV8;

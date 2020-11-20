@@ -71,23 +71,10 @@ struct CustomTabView: View
                     .font(.system(size: 30, weight: .bold, design: .rounded))
                     .foregroundColor(.secondary)
                     .colorInvert()
-                    .background(
-                        ZStack
-                        {
-                            
-                            Circle()
-                                .foregroundColor(Color(#colorLiteral(red: 0.01822857372, green: 0.2216099203, blue: 0.4166321754, alpha: 1)))
-                                .blur(radius: 4)
-                                .offset(y: 5)
-                            
-                            Circle()
-                                .foregroundColor(Color("ButtonColor"))
-                                .padding(3)
-                                .blur(radius: 2)
-                        })
+                    .background(Color("ButtonColor"))
                     .clipShape(Circle())
             }
-            .shadow(color: Color("ButtonColor"), radius: 5, y: 3)
+            .shadow(radius: 5, y: 3)
             .offset(y: -20)
             
             Spacer(minLength: 0)

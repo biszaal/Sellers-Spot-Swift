@@ -51,3 +51,23 @@ extension Date
         return date
     }
 }
+
+extension Int
+{
+    func shorten() -> String
+    {
+        var returnValue: String = ""
+        
+        if self > 1000
+        {
+            returnValue = "\(self / 1000)k"
+        }
+        
+        if self > 1000000
+        {
+            returnValue = "\(self / 1000)m"
+        }
+        
+        return returnValue
+    }
+}

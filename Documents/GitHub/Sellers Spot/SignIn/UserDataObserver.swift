@@ -20,7 +20,7 @@ class UserDataObserver: ObservableObject
                                         {
                                             if let childSnapShot = child as? DataSnapshot,
                                                let dict = childSnapShot.value as? [String: Any],
-                                               let id = dict["id"] as? String ?? "",
+                                               let id = childSnapShot.key as String?,
                                                let name = dict["name"] as? String ?? "",
                                                let email = dict["email"] as? String ?? "",
                                                let image = dict["image"] as? String ?? "",
@@ -63,13 +63,13 @@ class UserDataObserver: ObservableObject
                                         var tempUserData = UserData(id: "", name: "", email: "", image: "")
                                         
                                                if let dict = snapshot.value as? [String: Any],
-                                               let userId = dict["id"] as? String ?? "",
+                                               let userId = snapshot.key as String?,
                                                let username = dict["name"] as? String ?? "",
                                                let userEmail = dict["email"] as? String ?? "",
                                                let userImage = dict["image"] as? String ?? "",
-                                               let userMessagesSnapshot = dict["messageLinks"] as? NSDictionary?,
-                                               let userMessages = userMessagesSnapshot?.allValues as? [String] ?? [],
-                                               let messageConnection = userMessagesSnapshot?.allKeys as? [String] ?? []
+                                               let messageConnectionSnapshot = dict["messageLinks"] as? NSDictionary?,
+                                               let messageConnection = messageConnectionSnapshot?.allValues as? [String]? ?? [],
+                                               let userMessages = messageConnectionSnapshot?.allKeys as? [String]? ?? []
                                             {
                                                     tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage, messageId: userMessages, messageConnection: messageConnection))
                                             }
@@ -82,7 +82,8 @@ class UserDataObserver: ObservableObject
     func setChatLocation(userId: String, chatId: String, theirId: String)
     {
         let db = Database.database().reference()
-        db.child("users").child(userId).child("messageLinks").child(theirId).setValue(chatId)
+        db.child("users").child(userId).child("messageLinks").child(chatId).setValue(theirId)
+        db.child("users").child(theirId).child("messageLinks").child(chatId).setValue(userId)
     }
     
 }
