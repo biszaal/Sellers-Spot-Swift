@@ -9,8 +9,8 @@ struct MessagesListView: View
     @ObservedObject var userObserver = UserDataObserver()
     @ObservedObject var messageObserver = MessagesObserver()
     
-    @State var userImage: String = ""
-    @State var userName: String = ""
+    @State var user: UserData = UserData(id: "", name: "", email: "", image: "")
+    
     @State var message: String = ""
     @State var time: Date = Date()
     @State var dateFormatter = DateFormatter()
@@ -19,7 +19,7 @@ struct MessagesListView: View
     {
         HStack(spacing: 12)
         {
-            WebImage(url: URL(string: userImage))
+            WebImage(url: URL(string: user.image))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 40, height: 40, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -30,7 +30,7 @@ struct MessagesListView: View
             
             VStack(alignment: .leading, spacing: 12)
             {
-                Text(userName)
+                Text(user.name)
                     .lineLimit(1)
                 
                 Text(message)
@@ -54,8 +54,7 @@ struct MessagesListView: View
         {
             userObserver.getUserDetails(id: self.theirId)
             { user in
-                self.userName = user.name
-                self.userImage = user.image
+                self.user = user
             }
             
             messageObserver.lastText(chatId: self.chatId)

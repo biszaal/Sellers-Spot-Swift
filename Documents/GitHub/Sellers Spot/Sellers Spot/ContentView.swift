@@ -34,7 +34,7 @@ struct ContentView: View
                     
                     if selectedIndex == 1
                     {
-                        HomeMain()
+                        HomeMain(selectedTab: self.$selectedIndex)
                     }
                     
                     if selectedIndex == 2

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -13,16 +13,16 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Transparent Logo" translatesAutoresizingMaskIntoConstraints="NO" id="N2o-38-FfC">
-                                <rect key="frame" x="0.0" y="371" width="1024" height="624"/>
+                                <rect key="frame" x="0.0" y="251" width="428" height="424"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" name="ButtonColor"/>
                             </imageView>
                             <imageView opaque="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Sellers' Spot" translatesAutoresizingMaskIntoConstraints="NO" id="PHa-TU-oVY">
-                                <rect key="frame" x="25" y="57" width="977" height="219"/>
+                                <rect key="frame" x="10" y="39" width="409" height="148"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" name="ButtonColor"/>
                             </imageView>
@@ -40,7 +40,7 @@
         <image name="Sellers' Spot" width="1890" height="1417"/>
         <image name="Transparent Logo" width="1024" height="1024"/>
         <namedColor name="AccentColor">
-            <color red="0.93300002813339233" green="0.64300000667572021" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.95686274509803915" green="0.61568627450980395" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ButtonColor">
             <color red="0.0" green="0.32499998807907104" blue="0.6119999885559082" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -12,9 +12,11 @@ import FirebaseDatabase
 
 struct EachPost: View
 {
-    @State private var userId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
-    @State var productSold: Bool = false
+    @State private var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     
+    @State var user: UserData = UserData(id: "", name: "", email: "", image: "")
+    
+    @State var productSold: Bool = false
     @State var likePressed: Bool = false
     @State var dislikePressed: Bool = false
     @State var likes: Int = 0
@@ -23,12 +25,15 @@ struct EachPost: View
     @State var postDeleted: Bool = false
     
     var post: PostDetails
+    @Binding var selectedTab: Int
     
     @ObservedObject var postObserver = PostObserver()
+    @ObservedObject var messageObserver = MessagesObserver()
+    @ObservedObject var userObserver = UserDataObserver()
     
     var body: some View
     {
-        if !postDeleted
+        if (!postDeleted)
         {
             VStack(alignment: .leading)
             {
@@ -36,9 +41,9 @@ struct EachPost: View
                 {
                     VStack(alignment: .leading)
                     {
-                        HStack(spacing: 2)
+                        HStack(spacing: 5)
                         {
-                            WebImage(url: URL(string: post.userImage))
+                            WebImage(url: URL(string: self.user.image))
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 30, height: 30, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
@@ -47,9 +52,15 @@ struct EachPost: View
                                     Circle().stroke(Color.blue, lineWidth: 1))
                                 .shadow(radius: 5)
                             
-                            Text(post.userName)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                            Text(self.user.name)
+                        }
+                        .onAppear()
+                        {
+                            // fetching user details
+                            userObserver.getUserDetails(id: post.userId)
+                            { user in
+                                self.user = user
+                            }
                         }
                         
                         HStack
@@ -67,7 +78,7 @@ struct EachPost: View
                     
                     VStack(alignment: .trailing, spacing: 5)
                     {
-                        if post.userId == userId   // if this is my post then only I can delete it
+                        if post.userId == myId   // if this is my post then only I can delete it
                         {
                             Button(action: deletePost)
                             {
@@ -90,6 +101,7 @@ struct EachPost: View
                     .frame(alignment: .leading)
                     .padding(.horizontal)
                     .padding(.vertical, 5)
+                
                 Text(post.postDescription)
                     .font(.subheadline)
                     .padding(.horizontal)
@@ -147,7 +159,7 @@ struct EachPost: View
                     
                     Spacer()
                     
-                    Text("Price: $\(post.postPrice)")
+                    Text("Price: $\(String(format: "%.2f", post.postPrice))")
                         .foregroundColor(.primary)
                     
                 }
@@ -155,39 +167,45 @@ struct EachPost: View
                 .foregroundColor(Color(UIColor.systemBlue))
                 
                 //Buy, Message Button
-                HStack
+                if post.userId != myId
                 {
-                    Button(action: {
-                        // when bought
-                        self.productSold = true
-                    })
+                    HStack
                     {
-                        Text(self.productSold ? "Sold" : "Buy")
-                            .padding()
-                            .lineLimit(1)
-                            .frame(width: UIScreen.main.bounds.width / 3.5)
-                            .foregroundColor(.white)
-                            .background(self.productSold ? .secondary : Color("ButtonColor"))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                    .disabled(self.productSold)
-                    .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
-                    
-                    Spacer()
-                    
-                    Button(action: {
+                        Button(action: {
+                            // when bought
+                            self.productSold = true
+                        })
+                        {
+                            Text(self.productSold ? "Sold" : "Buy")
+                                .padding(10)
+                                .lineLimit(1)
+                                .frame(width: 150)
+                                .foregroundColor(.white)
+                                .background(self.productSold ? .secondary : Color("ButtonColor"))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        .disabled(self.productSold)
+                        .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                         
-                    }){
-                        Text("Message")
-                            .padding()
-                            .lineLimit(1)
-                            .frame(width: UIScreen.main.bounds.width / 3.5)
-                            .foregroundColor(.white)
-                            .background(self.productSold ? .secondary : Color("ButtonColor"))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        Spacer()
+                        
+                        Button(action:
+                                {
+                                    messageObserver.addMessage(chatId: UUID().uuidString, theirId: post.userId, message: "Hi there!")
+                                    selectedTab = 2
+                                })
+                        {
+                            Text("Message")
+                                .padding(10)
+                                .lineLimit(1)
+                                .frame(width: 150)
+                                .foregroundColor(.white)
+                                .background(self.productSold ? .secondary : Color("ButtonColor"))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        .disabled(self.productSold)
+                        .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                     }
-                    .disabled(self.productSold)
-                    .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                 }
             }
             .padding(10)
@@ -199,13 +217,13 @@ struct EachPost: View
                 likes = post.postLike.count
                 dislikes = post.postDislike.count
                 
-                if post.postLike.contains(userId)
+                if post.postLike.contains(myId)
                 {   // fetch if user already liked
                     likePressed = true
                     self.likes = post.postLike.count
                 }
                 
-                if post.postDislike.contains(userId)
+                if post.postDislike.contains(myId)
                 {
                     dislikePressed = true
                     self.dislikes = post.postDislike.count
@@ -223,23 +241,23 @@ struct EachPost: View
     {
         if likePressed
         {
-            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
+            postObserver.removeLikeDislike(postId: post.id, userId: myId, like: true, dislike: false)
             likePressed = false
             likes -= 1
         }
         else if dislikePressed
         {
-            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
+            postObserver.removeLikeDislike(postId: post.id, userId: myId, like: false, dislike: true)
             dislikePressed = false
             dislikes -= 1
             
-            postObserver.addLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
+            postObserver.addLikeDislike(postId: post.id, userId: myId, like: true, dislike: false)
             likePressed = true
             likes += 1
         }
         else
         {
-            postObserver.addLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
+            postObserver.addLikeDislike(postId: post.id, userId: myId, like: true, dislike: false)
             likePressed = true
             likes += 1
         }
@@ -250,23 +268,23 @@ struct EachPost: View
     {
         if dislikePressed
         {
-            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
+            postObserver.removeLikeDislike(postId: post.id, userId: myId, like: false, dislike: true)
             dislikePressed = false
             dislikes -= 1
         }
         else if likePressed
         {
-            postObserver.removeLikeDislike(postId: post.id, userId: userId, like: true, dislike: false)
+            postObserver.removeLikeDislike(postId: post.id, userId: myId, like: true, dislike: false)
             likePressed = false
             likes -= 1
             
-            postObserver.addLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
+            postObserver.addLikeDislike(postId: post.id, userId: myId, like: false, dislike: true)
             dislikePressed = true
             dislikes += 1
         }
         else
         {
-            postObserver.addLikeDislike(postId: post.id, userId: userId, like: false, dislike: true)
+            postObserver.addLikeDislike(postId: post.id, userId: myId, like: false, dislike: true)
             dislikePressed = true
             dislikes += 1
         }

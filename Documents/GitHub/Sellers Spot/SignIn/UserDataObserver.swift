@@ -40,7 +40,7 @@ class UserDataObserver: ObservableObject
     {
         let db = Database.database().reference()
         
-        db.child("users").child(id).setValue(["id": id, "name": name, "email": email, "image": image])
+        db.child("users").child(id).setValue(["name": name, "email": email, "image": image])
     }
     
     func noticObserver()
@@ -57,33 +57,32 @@ class UserDataObserver: ObservableObject
     {
         
         let postRef = Database.database().reference().child("users").child(id)
-        postRef.observeSingleEvent(of: .value, with:
-                                    { snapshot in
-                                        
-                                        var tempUserData = UserData(id: "", name: "", email: "", image: "")
-                                        
-                                               if let dict = snapshot.value as? [String: Any],
-                                               let userId = snapshot.key as String?,
-                                               let username = dict["name"] as? String ?? "",
-                                               let userEmail = dict["email"] as? String ?? "",
-                                               let userImage = dict["image"] as? String ?? "",
-                                               let messageConnectionSnapshot = dict["messageLinks"] as? NSDictionary?,
-                                               let messageConnection = messageConnectionSnapshot?.allValues as? [String]? ?? [],
-                                               let userMessages = messageConnectionSnapshot?.allKeys as? [String]? ?? []
-                                            {
-                                                    tempUserData = (UserData(id: userId, name: username, email: userEmail, image: userImage, messageId: userMessages, messageConnection: messageConnection))
-                                            }
-                                        
-                                        return completionHandler(tempUserData)
-                                    })
+        postRef.observe(.value, with:
+                            { snapshot in
+                                
+                                var tempUserData = UserData(id: "", name: "", email: "", image: "")
+                                
+                                if let dict = snapshot.value as? [String: Any],
+                                   let username = dict["name"] as? String ?? "",
+                                   let userEmail = dict["email"] as? String ?? "",
+                                   let userImage = dict["image"] as? String ?? "",
+                                   let messageConnectionSnapshot = dict["messageLink"] as? NSDictionary?,
+                                   let messageConnection = messageConnectionSnapshot?.allValues as? [String]? ?? [],
+                                   let messageLink = messageConnectionSnapshot?.allKeys as? [String]? ?? []
+                                {
+                                    tempUserData = (UserData(id: id, name: username, email: userEmail, image: userImage, messageLink: messageLink, messageConnection: messageConnection))
+                                }
+                                
+                                return completionHandler(tempUserData)
+                            })
     }
     
     // save chatBox Location to the user database
     func setChatLocation(userId: String, chatId: String, theirId: String)
     {
         let db = Database.database().reference()
-        db.child("users").child(userId).child("messageLinks").child(chatId).setValue(theirId)
-        db.child("users").child(theirId).child("messageLinks").child(chatId).setValue(userId)
+        db.child("users").child(userId).child("messageLink").child(chatId).setValue(theirId)
+        db.child("users").child(theirId).child("messageLink").child(chatId).setValue(userId)
     }
     
 }
@@ -94,7 +93,7 @@ struct UserData: Identifiable
     var name: String
     var email: String
     var image: String
-    var messageId: [String]?
+    var messageLink: [String]?
     var messageConnection: [String]?
     var friends: [String]?
 }

@@ -9,6 +9,8 @@ import Combine
 
 struct HomeMain: View
 {
+    @Binding var selectedTab: Int
+    
     @ObservedObject var userObserver = UserDataObserver()
     @State var searchTextField: String = ""
     
@@ -49,7 +51,7 @@ struct HomeMain: View
             .edgesIgnoringSafeArea(.top)
             
 
-                PostGroup(searchTextField: self.$searchTextField)
+            PostGroup(selectedTab: self.$selectedTab, searchTextField: self.$searchTextField)
         }
     }
 }

@@ -13,7 +13,7 @@ struct MessagesMain: View
     @ObservedObject var messageObserver = MessagesObserver()
 
     @State var messageConnection: [String] = []
-    @State var messageLinks: [String] = []
+    @State var messageLink: [String] = []
     @State var showEmptyText: Bool = false
     
     @State var showDeleteAlert: Bool = false
@@ -56,10 +56,10 @@ struct MessagesMain: View
                 {
                     List
                     {
-                        ForEach(messageLinks.indices, id: \.self)
+                        ForEach(messageLink.indices, id: \.self)
                         { each in
                             NavigationLink(destination:
-                                            ChatBoxView(theirId: messageConnection[each], chatId: messageLinks[each])
+                                            ChatBoxView(theirId: messageConnection[each], chatId: messageLink[each])
                                             //hiding the tab bar while texting
                                             .onAppear()
                                             {
@@ -71,7 +71,7 @@ struct MessagesMain: View
                                                 hideTabBar = false
                                             })
                             {
-                                MessagesListView(theirId: messageConnection[each], chatId: messageLinks[each])
+                                MessagesListView(theirId: messageConnection[each], chatId: messageLink[each])
                             }
                         }.onDelete
                         { index in
@@ -83,6 +83,8 @@ struct MessagesMain: View
             }
             .navigationTitle("Messages")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+        
         .onAppear()
         {
             self.loadData()
@@ -91,7 +93,7 @@ struct MessagesMain: View
         .alert(isPresented: self.$showDeleteAlert)
         {
             Alert(title: Text("Delete"), message: Text("Are you sure you want to delete the chat?"), primaryButton: .destructive(Text("Delete")) {
-                deleteData(chatId: self.messageLinks[deleteIndex])
+                deleteData(chatId: self.messageLink[deleteIndex])
             }, secondaryButton: .cancel())
         }
     }
@@ -101,15 +103,14 @@ struct MessagesMain: View
         // Getting all the chat box locations for my user
         userObserver.getUserDetails(id: myId)
         { user in
-            self.messageLinks = user.messageId ?? []
+            self.messageLink = user.messageLink ?? []
             self.messageConnection = user.messageConnection ?? []
         }
     }
     
     func deleteData(chatId: String)
     {
-        Database.database().reference().child("messages").child(chatId).removeValue()
-        Database.database().reference().child("users").child(myId).child("messageLinks").child(chatId).removeValue()
-        Database.database().reference().child("users").child(messageConnection[deleteIndex]).child("messageLinks").child(chatId).removeValue()
+        Database.database().reference().child("users").child(myId).child("messageLink").child(chatId).removeValue()
+        Database.database().reference().child("users").child(messageConnection[deleteIndex]).child("messageLink").child(chatId).removeValue()
     }
 }

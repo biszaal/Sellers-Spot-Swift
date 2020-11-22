@@ -58,14 +58,21 @@ extension Int
     {
         var returnValue: String = ""
         
-        if self > 1000
-        {
-            returnValue = "\(self / 1000)k"
-        }
-        
         if self > 1000000
         {
-            returnValue = "\(self / 1000)m"
+            let temp = (Float(self) / 100000).rounded() * 100000
+            returnValue = "\(temp / 1000000)m"
+        }
+        
+        else if self >= 1000
+        {
+            let temp = (Float(self) / 100).rounded() * 100
+            returnValue = "\(temp / 1000)k"
+        }
+        
+        else
+        {
+            returnValue = String(self)
         }
         
         return returnValue

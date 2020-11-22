@@ -10,10 +10,12 @@ import Foundation
 
 struct PostGroup: View
 {
+    
     @ObservedObject var postObserver = PostObserver()
     @State var posts = [PostDetails]()
     @State var showSeeMore: Bool = true
     
+    @Binding var selectedTab: Int
     @Binding var searchTextField: String
     
     var body: some View
@@ -33,7 +35,7 @@ struct PostGroup: View
             {
                 ForEach(posts)
                 { post in
-                    EachPost(post: post)
+                    EachPost(post: post, selectedTab: self.$selectedTab)
                 }
                 
                 if showSeeMore
