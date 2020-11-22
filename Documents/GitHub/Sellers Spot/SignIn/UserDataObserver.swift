@@ -23,12 +23,11 @@ class UserDataObserver: ObservableObject
                                                let id = childSnapShot.key as String?,
                                                let name = dict["name"] as? String ?? "",
                                                let email = dict["email"] as? String ?? "",
-                                               let image = dict["image"] as? String ?? "",
-                                               let friends = dict["friends"] as? [String] ?? []
+                                               let image = dict["image"] as? String ?? ""
                                             {
                                                 if id != self.myId
                                                 {
-                                                    tempUserData.append(UserData(id: id, name: name, email: email, image: image, friends: friends))
+                                                    tempUserData.append(UserData(id: id, name: name, email: email, image: image))
                                                 }
                                             }
                                         }
@@ -65,12 +64,9 @@ class UserDataObserver: ObservableObject
                                 if let dict = snapshot.value as? [String: Any],
                                    let username = dict["name"] as? String ?? "",
                                    let userEmail = dict["email"] as? String ?? "",
-                                   let userImage = dict["image"] as? String ?? "",
-                                   let messageConnectionSnapshot = dict["messageLink"] as? NSDictionary?,
-                                   let messageConnection = messageConnectionSnapshot?.allValues as? [String]? ?? [],
-                                   let messageLink = messageConnectionSnapshot?.allKeys as? [String]? ?? []
+                                   let userImage = dict["image"] as? String ?? ""
                                 {
-                                    tempUserData = (UserData(id: id, name: username, email: userEmail, image: userImage, messageLink: messageLink, messageConnection: messageConnection))
+                                    tempUserData = (UserData(id: id, name: username, email: userEmail, image: userImage))
                                 }
                                 
                                 return completionHandler(tempUserData)
@@ -93,7 +89,4 @@ struct UserData: Identifiable
     var name: String
     var email: String
     var image: String
-    var messageLink: [String]?
-    var messageConnection: [String]?
-    var friends: [String]?
 }

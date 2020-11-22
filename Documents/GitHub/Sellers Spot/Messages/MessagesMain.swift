@@ -101,10 +101,10 @@ struct MessagesMain: View
     func loadData()
     {
         // Getting all the chat box locations for my user
-        userObserver.getUserDetails(id: myId)
-        { user in
-            self.messageLink = user.messageLink ?? []
-            self.messageConnection = user.messageConnection ?? []
+        messageObserver.getMessageLink(userId: myId)
+        { messageLink, messageConnection in
+            self.messageLink = messageLink
+            self.messageConnection = messageConnection
         }
     }
     

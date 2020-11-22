@@ -86,9 +86,9 @@ struct FriendsMain: View
         
         .onAppear()
         {
-            userObserver.getUserDetails(id: myId)
-            { user in
-                self.messageConnection = user.messageConnection ?? []
+            message.getMessageLink(userId: myId)
+            { messageLink, messageConnection in
+                self.messageConnection = messageConnection
             }
         }
     }

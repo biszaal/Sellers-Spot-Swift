@@ -54,44 +54,36 @@ struct EachPost: View
                             
                             Text(self.user.name)
                         }
-                        .onAppear()
-                        {
-                            // fetching user details
-                            userObserver.getUserDetails(id: post.userId)
-                            { user in
-                                self.user = user
-                            }
-                        }
                         
-                        HStack
-                        {
-                            Image(systemName: "mappin.and.ellipse")
-                            Text(post.postLocation)
-                        }
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        
+                        Text(post.postDate.timeAgoDisplayed())
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.leading, 30)
                     }
                     .padding(.horizontal, 10)
                     
                     Spacer()
                     
-                    VStack(alignment: .trailing, spacing: 5)
+                    if post.userId == myId   // if this is my post then only I can delete it
                     {
-                        if post.userId == myId   // if this is my post then only I can delete it
+                        Button(action: deletePost)
                         {
-                            Button(action: deletePost)
-                            {
-                                Image(systemName: "trash.fill")
-                                    .font(.headline)
-                                    .foregroundColor(.red)
-                                    .padding(.horizontal)
-                            }
+                            Image(systemName: "trash.fill")
+                                .font(.headline)
+                                .foregroundColor(.red)
+                                .padding(.horizontal)
                         }
-                        
-                        Text(post.postDate.timeAgoDisplayed())
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                    }
+                    
+                    else
+                    {
+                        Button(action: reportPost)
+                        {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.headline)
+                                .foregroundColor(.yellow)
+                                .padding(.horizontal)
+                        }
                     }
                 }
                 
@@ -121,6 +113,15 @@ struct EachPost: View
                         }
                     }
                 }
+                
+                HStack
+                {
+                    Image(systemName: "mappin.and.ellipse")
+                    Text(post.postLocation)
+                }
+                .padding(5)
+                .font(.caption)
+                .foregroundColor(.secondary)
                 
                 // Like, Dislike Button
                 HStack
@@ -214,6 +215,12 @@ struct EachPost: View
             
             .onAppear()
             {
+                // fetching user details
+                userObserver.getUserDetails(id: post.userId)
+                { user in
+                    self.user = user
+                }
+                
                 likes = post.postLike.count
                 dislikes = post.postDislike.count
                 
@@ -311,6 +318,14 @@ struct EachPost: View
         }
         
         postDeleted = true
+    }
+    
+    // MARK: Report Post
+    
+    func reportPost()
+    {
+        let db = Database.database().reference()
+        db.child("reportedPosts").setValue([post.id : self.myId])
     }
     
     func buttonBackground() -> some View

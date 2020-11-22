@@ -85,6 +85,29 @@ class MessagesObserver: ObservableObject
         }
     }
     
+    // Fetch user messages. Chat locations of the current user and who the user is talking to (their id).
+    func getMessageLink(userId: String, completionHandler: @escaping (_ messageLink: [String], _ messageConnection: [String]) -> ())
+    {
+        let postRef = Database.database().reference().child("users").child(userId)
+        postRef.observe(.value, with:
+                            { snapshot in
+                                
+                                var tempMessageLink: [String] = []
+                                var tempMessageConnection: [String] = []
+                                
+                                if let dict = snapshot.value as? [String: Any],
+                                let messageConnectionSnapshot = dict["messageLink"] as? NSDictionary?,
+                                let messageConnection = messageConnectionSnapshot?.allValues as? [String]? ?? [],
+                                let messageLink = messageConnectionSnapshot?.allKeys as? [String]? ?? []
+                                {
+                                    tempMessageLink = messageLink
+                                    tempMessageConnection = messageConnection
+                                }
+                                
+                                return completionHandler(tempMessageLink, tempMessageConnection)
+                            })
+    }
+    
     func addMessage(chatId: String, theirId: String, message: String)
     {
         let db = Firestore.firestore()

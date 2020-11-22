@@ -251,15 +251,6 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
-		6145F9942517315600D5784E /* ImagePicker */ = {
-			isa = PBXGroup;
-			children = (
-				61DBEBED251A02A8008758A2 /* PostImageView.swift */,
-				6145F9A3251732E800D5784E /* ImagePicker.swift */,
-			);
-			path = ImagePicker;
-			sourceTree = "<group>";
-		};
 		615DBEA725339D8D0078B109 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,7 +274,7 @@
 			children = (
 				6186637F2511FCA0002BD453 /* NewPostView.swift */,
 				6127996E2515D2D300D1A8FA /* PostUserInfoView.swift */,
-				6145F9942517315600D5784E /* ImagePicker */,
+				61DBEBED251A02A8008758A2 /* PostImageView.swift */,
 			);
 			path = "New Post";
 			sourceTree = "<group>";
@@ -294,6 +285,7 @@
 				614C9919253F6B57007E7BA5 /* TimeStamp.swift */,
 				615DBE7D25306E320078B109 /* TextLimiter.swift */,
 				61649D1325441430006FB72E /* CustomTabView.swift */,
+				6145F9A3251732E800D5784E /* ImagePicker.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
