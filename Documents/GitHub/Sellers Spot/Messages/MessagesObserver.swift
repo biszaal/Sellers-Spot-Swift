@@ -47,7 +47,7 @@ class MessagesObserver: ObservableObject
         
         if lastMessage == nil
         {
-            queryData = db.collection("data").document("messages").collection(chatId).order(by: "time").limit(toLast: 10)
+            queryData = db.collection("data").document("messages").collection(chatId).order(by: "time").limit(toLast: 20)
         }
         else
         {

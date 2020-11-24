@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 extension Date
 {
@@ -76,5 +77,11 @@ extension Int
         }
         
         return returnValue
+    }
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

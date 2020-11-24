@@ -106,7 +106,7 @@ struct EachPost: View
                         { i in
                             WebImage(url: URL(string: (self.post.postImage[i] ?? "")))
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 200, height: 200)
                                 .background(Color.secondary.colorInvert().opacity(0.5))
                                 .cornerRadius(10)
@@ -186,7 +186,6 @@ struct EachPost: View
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .disabled(self.productSold)
-                        .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                         
                         Spacer()
                         
@@ -205,7 +204,6 @@ struct EachPost: View
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .disabled(self.productSold)
-                        .shadow(color: self.productSold ? .secondary : Color("ButtonColor"), radius: 5, x: 3, y: 3)
                     }
                 }
             }
@@ -326,22 +324,6 @@ struct EachPost: View
     {
         let db = Database.database().reference()
         db.child("reportedPosts").setValue([post.id : self.myId])
-    }
-    
-    func buttonBackground() -> some View
-    {
-        return ZStack
-        {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(self.productSold ? .secondary : Color(#colorLiteral(red: 0.01822857372, green: 0.2216099203, blue: 0.4166321754, alpha: 1)))
-                .blur(radius: 4)
-                .offset(y: 5)
-            
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(self.productSold ? .secondary : Color("ButtonColor"))
-                .padding(3)
-                .blur(radius: 2)
-        }
     }
 }
 

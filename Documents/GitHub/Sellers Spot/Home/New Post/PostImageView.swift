@@ -10,9 +10,8 @@ import SwiftUI
 
 struct PostImageView: View
 {
-    @Binding var image: [UIImage?]
+    @Binding var image: [UIImage]
     @State var viewImagePicker: Bool = false
-    @State var inputImage: UIImage?
     
     var body: some View
     {
@@ -20,41 +19,39 @@ struct PostImageView: View
         {
             HStack
             {
-                
-                if inputImage != nil
+                HStack
                 {
-                    HStack
-                    {
-                        ForEach(0..<image.count, id: \.self)    // self is important here
-                        { imageIndex in
+                    ForEach(image.indices, id: \.self)    // self is important here
+                    { imageIndex in
+                        
+                        ZStack(alignment: .topTrailing)
+                        {
+                            Image(uiImage: image[imageIndex])
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(10)
                             
-                            ZStack(alignment: .topTrailing)
+                            Button(action:
+                                    {
+                                        image.remove(at: imageIndex)
+                                    })
                             {
-                                Image(uiImage: image[imageIndex]!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(10)
-                                
-                                Button(action: {
-                                    image.remove(at: imageIndex)
-                                })
-                                {
-                                    Image(systemName: "xmark")
-                                        .font(.callout)
-                                        .foregroundColor(.white)
-                                }
-                                .padding(7)
+                                Image(systemName: "xmark")
+                                    .font(.callout)
+                                    .foregroundColor(.white)
                             }
+                            .padding(7)
                         }
                     }
                 }
                 
                 if image.count < 5
                 {
-                    Button(action: {
-                        self.viewImagePicker = true
-                    })
+                    Button(action:
+                            {
+                                self.viewImagePicker = true
+                            })
                     {
                         ZStack
                         {
@@ -76,15 +73,11 @@ struct PostImageView: View
                 }
             }
         }
-        .sheet(isPresented: self.$viewImagePicker, onDismiss: loadImage)
+        
+        .sheet(isPresented: self.$viewImagePicker)
         {
-            ImagePicker(image: self.$inputImage)
+            ImagePicker(images: self.$image, picker: self.$viewImagePicker)
+                .animation(.default)
         }
-    }
-    
-    func loadImage()
-    {
-        guard let inputImage = inputImage else { return }
-        image.append(inputImage)
     }
 }

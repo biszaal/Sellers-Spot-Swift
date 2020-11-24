@@ -19,43 +19,37 @@ struct CustomTabView: View
         {
             Button(action:
                     {
-                        withAnimation(.spring())
-                        {
-                            selectedIndex = 1
-                        }
+                        selectedIndex = 1
                     })
             {
                 VStack
                 {
                     Image(systemName: "house.fill")
-                        .font(.title)
+                        .font(.system(size: 25))
                     Text("Home")
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 1 ? Color("ButtonColor") : .secondary)
-            .offset(y: self.selectedIndex == 1 ? -10 : 0)
+            .foregroundColor(self.selectedIndex == 1 ? .blue : .secondary)
+            .offset(y: self.selectedIndex == 1 ? -5 : 0)
             
             Spacer(minLength: 0)
             
             Button(action:
                     {
-                        withAnimation(.spring())
-                        {
-                            selectedIndex = 2
-                        }
+                        selectedIndex = 2
                     })
             {
                 VStack
                 {
                     Image(systemName: "message.fill")
-                        .font(.title)
+                        .font(.system(size: 25))
                     Text("Messages")
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 2 ? Color("ButtonColor") : .secondary)
-            .offset(y: self.selectedIndex == 2 ? -10 : 0)
+            .foregroundColor(self.selectedIndex == 2 ? .blue : .secondary)
+            .offset(y: self.selectedIndex == 2 ? -5 : 0)
             
             Spacer(minLength: 0)
             
@@ -68,10 +62,9 @@ struct CustomTabView: View
                 Image(systemName: "plus")
                     .padding()
                     .frame(width: 60, height: 60)
-                    .font(.system(size: 30, weight: .bold, design: .rounded))
-                    .foregroundColor(.secondary)
-                    .colorInvert()
-                    .background(Color("ButtonColor"))
+                    .font(.system(size: 30, design: .rounded))
+                    .foregroundColor(.white)
+                    .background(Color("AccentColor"))
                     .clipShape(Circle())
             }
             .shadow(radius: 5, y: 3)
@@ -81,46 +74,41 @@ struct CustomTabView: View
             
             Button(action:
                     {
-                        withAnimation(.spring())
-                        {
-                            selectedIndex = 3
-                        }
+                        selectedIndex = 3
                     })
             {
                 VStack
                 {
                     Image(systemName: "person.3.fill")
-                        .font(.title)
+                        .font(.system(size: 25))
                     Text("Friends")
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 3 ? Color("ButtonColor") : .secondary)
-            .offset(y: self.selectedIndex == 3 ? -10 : 0)
+            .foregroundColor(self.selectedIndex == 3 ? .blue : .secondary)
+            .offset(y: self.selectedIndex == 3 ? -5 : 0)
             
             Spacer(minLength: 0)
             
             Button(action:
                     {
-                        withAnimation(.spring())
-                        {
-                            selectedIndex = 4
-                        }
+                        selectedIndex = 4
                     })
             {
                 VStack
                 {
                     Image(systemName: "person.fill")
-                        .font(.title)
+                        .font(.system(size: 25))
                     Text("Account")
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 4 ? Color("ButtonColor") : .secondary)
-            .offset(y: self.selectedIndex == 4 ? -10 : 0)
+            .foregroundColor(self.selectedIndex == 4 ? .blue : .secondary)
+            .offset(y: self.selectedIndex == 4 ? -5 : 0)
         }
+        .animation(.default)
         .padding(.horizontal, 35)
         .padding(.bottom, 20)
-        .background(Color.secondary.colorInvert())
+        .background(Color(UIColor.secondarySystemBackground))
     }
 }

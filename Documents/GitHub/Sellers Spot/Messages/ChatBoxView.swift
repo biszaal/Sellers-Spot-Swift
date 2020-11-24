@@ -21,82 +21,100 @@ struct ChatBoxView: View
     @State var showSeeMore: Bool = true
     @State var keyboardHeight: CGFloat = 0
     @State var keyboardOn: Bool = false     // check if keyboard is appeared or not
+    @State var isScrolled: Bool = false
     
     var body: some View
     {
-        
         ScrollViewReader
-        {   reader in
+        { reader in
             
             VStack
             {
-                VStack
+                ScrollView(showsIndicators: false)
                 {
-                    ScrollView(showsIndicators: false)
-                    {
-                        Button(action:
-                                {
-                                    batchFetching(seeMore: true)
-                                })
-                        {
-                            Text("See more...")
-                                .font(.caption)
-                                .padding()
-                                .background(Color(UIColor.secondarySystemBackground))
-                                .cornerRadius(30)
-                        }
-                        ForEach(self.messagesData, id: \.self)
-                        { each in
-                            MessageRow(userId: each.userId, message: each.message, userImage: self.theirImage)
-                        }
-                        
-                        .onAppear()
-                        {      // scroll to the bottom when open
-                            reader.scrollTo(messagesData.last!.id, anchor: .bottom)
-                        }
-                        
-                        Spacer()
-                            .frame(height: keyboardHeight)
-                    }
-                }
-                
-                HStack
-                {
-                    
-                    TextEditor(text: $typedMessage)
-                        .frame(height: 40)
-                        .padding(.horizontal, 15)
-                        .overlay(Capsule().stroke(Color.secondary, lineWidth: 2))
-                        .onReceive(Just(typedMessage))
-                        { (newValue: String) in
-                            self.typedMessage = String(newValue.prefix(1000))
-                        }
-                    
                     Button(action:
                             {
-                                self.typedMessage = typedMessage.trimmingCharacters(in: .whitespacesAndNewlines) // remove empty spaces
-                                if typedMessage != ""
-                                {
-                                    self.messageObserver.addMessage(chatId: self.chatId, theirId: self.theirId, message: self.typedMessage)
-                                }
-                                self.typedMessage = ""
-                                reader.scrollTo(messagesData.first?.id, anchor: .bottom)
+                                batchFetching(seeMore: true)
                             })
                     {
-                        Text("Send")
+                        Text("See more...")
+                            .font(.caption)
+                            .padding()
+                            .background(Color(UIColor.secondarySystemBackground))
+                            .cornerRadius(30)
+                    }
+                    
+                    ForEach(self.messagesData, id: \.self)
+                    { each in
+                        MessageRow(userId: each.userId, message: each.message, userImage: self.theirImage)
+                            .id(each.id)
+                    }
+                    
+                    .onAppear()
+                    {
+                        // scorlling for the first time it opens
+                        if !isScrolled
+                        {
+                            withAnimation
+                            {
+                                reader.scrollTo(self.messagesData.last!.id,anchor: .bottom)
+                                isScrolled = true
+                            }
+                        }
                     }
                 }
-                .navigationBarTitle(self.theirName, displayMode: .inline)
+                // when user send or recieve message scroll down
+                .onChange(of: self.messagesData)
+                { (_) in
+                    reader.scrollTo(self.messagesData.last!.id,anchor: .bottom)
+                }
+                
+                // when keyboard appear scroll
+                .onChange(of: self.keyboardOn)
+                { keyBoardState in
+                    if keyBoardState
+                    {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
+                        {
+                            withAnimation
+                            {
+                                reader.scrollTo(self.messagesData.last!.id,anchor: .bottom)
+                            }
+                        }
+                    }
+                }
             }
             
-            // hide keyboard on drag gesture
-            .gesture(DragGesture().onChanged(
-                        { _ in
-                            if keyboardOn
-                            {
-                                UIApplication.shared.endEditing()
-                            }
-                        }))
+            HStack
+            {
+                
+                TextEditor(text: $typedMessage)
+                    .frame(height: 40)
+                    .padding(.horizontal, 15)
+                    .overlay(Capsule().stroke(Color.secondary, lineWidth: 2))
+                    .onReceive(Just(typedMessage))
+                    { (newValue: String) in
+                        self.typedMessage = String(newValue.prefix(1000))
+                    }
+                    
+                    // hide keyboard on drag gesture
+                    .gesture(DragGesture().onChanged(
+                                { _ in
+                                    if keyboardOn
+                                    {
+                                        UIApplication.shared.endEditing()
+                                    }
+                                }))
+                
+                Button(action:
+                        {
+                            sendMessage()
+                        })
+                {
+                    Text("Send")
+                }
+            }
+            .navigationBarTitle(self.theirName, displayMode: .inline)
         }
         .padding()
         
@@ -104,21 +122,7 @@ struct ChatBoxView: View
         {
             self.batchFetching()
             
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
-            { (notification) in
-                guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-                
-                self.keyboardOn = true
-                self.keyboardHeight = keyboardFrame.height
-            }
-            
-            
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
-            { (notification) in
-                
-                self.keyboardOn = false
-                self.keyboardHeight = 0
-            }
+            self.keyboardObserver()
         }
         
     }
@@ -142,6 +146,32 @@ struct ChatBoxView: View
         { user in
             self.theirName = user.name
             self.theirImage = user.image
+        }
+    }
+    
+    func sendMessage()
+    {
+        self.typedMessage = self.typedMessage.trimmingCharacters(in: .whitespacesAndNewlines) // remove empty spaces
+        if self.typedMessage != ""
+        {
+            self.messageObserver.addMessage(chatId: self.chatId, theirId: self.theirId, message: self.typedMessage)
+        }
+        self.typedMessage = ""
+        
+    }
+    
+    // checks if the keyboard is on or off
+    func keyboardObserver()
+    {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main)
+        { (notification) in
+            self.keyboardOn = true
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main)
+        { (notification) in
+            
+            self.keyboardOn = false
         }
     }
 }

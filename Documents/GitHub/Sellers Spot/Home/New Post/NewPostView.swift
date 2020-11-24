@@ -32,7 +32,7 @@ struct NewPostView: View
     @Binding var photoUplodingProgress: Float
     @Binding var isUploading: Bool
     
-    @State var storeImages: [UIImage?] = []
+    @State var storeImages: [UIImage] = []
     
     @ObservedObject var post = PostObserver()
     @ObservedObject var user = UserDataObserver()
@@ -73,7 +73,7 @@ struct NewPostView: View
                             let storage = Storage.storage()
                             for i in 0..<storeImages.count
                             {
-                                let taskReference = storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").putData((storeImages[i]!.jpegData(compressionQuality: 0.50))!, metadata: nil)
+                                let taskReference = storage.reference().child("ImagesOfPosts/\(userId)/\(postId)/image\(i).jpeg").putData((storeImages[i].jpegData(compressionQuality: 0.50))!, metadata: nil)
                                 {   (url, err) in
                                     if err != nil
                                     {
@@ -214,7 +214,6 @@ struct NewPostView: View
     {
         // Storing post the firebase Cloud
         self.post.addPost(id: postId, userId: userId, username: userEmail, userImage: userImage, postName: postName, postLocation: postLocation, postImage: postImages, postDescription: postDescription, postPrice: postPrice)
-        print("Done")
         
         isUploading = false     // hide uploading bar
         

@@ -7,54 +7,70 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ImagePicker: UIViewControllerRepresentable
 {
+    @Binding var images: [UIImage]
+    @Binding var picker: Bool
     
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate
+    func makeCoordinator() -> Coordinator
+    {
+        return ImagePicker.Coordinator(parent: self)
+    }
+    
+    func makeUIViewController(context: Context) -> PHPickerViewController
+    {
+        var config = PHPickerConfiguration()
+        config.filter = .images
+        config.selectionLimit = 5 - self.images.count
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = context.coordinator
+        return picker
+    }
+    
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context)
+    {
+        
+    }
+    
+    class Coordinator: NSObject, PHPickerViewControllerDelegate
     {
         var parent: ImagePicker
         
-        init(_ parent: ImagePicker)
+        init(parent: ImagePicker)
         {
             self.parent = parent
         }
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult])
         {
-            if let uiImage = info[.editedImage] as? UIImage
-            {
-                parent.image = uiImage
-            }
-            else if let uiImage = info[.originalImage] as? UIImage
-            {
-                parent.image = uiImage
-            }
+            // closing picker
+            self.parent.picker.toggle()
             
-            parent.presentationMode.wrappedValue.dismiss()
+            for img in results
+            {
+                if img.itemProvider.canLoadObject(ofClass: UIImage.self)
+                {
+                    img.itemProvider.loadObject(ofClass: UIImage.self)
+                    { (image, err) in
+                        guard let image = image else
+                        {
+                            print((err?.localizedDescription)!)
+                            return
+                        }
+                        
+                        withAnimation(.easeIn)
+                        {
+                            self.parent.images.append(image as! UIImage)
+                        }
+                    }
+                }
+                else
+                {
+                    print("cannot be loaded")
+                }
+            }
         }
     }
-    
-    @Environment(\.presentationMode) var presentationMode
-    @Binding var image: UIImage?
-    
-    func makeCoordinator() -> Coordinator
-    {
-        Coordinator(self)
-    }
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController
-    {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-        picker.allowsEditing = true
-        picker.sourceType = .photoLibrary
-        return picker
-    }
-    
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>)
-    {
-        
-    }
-    
 }

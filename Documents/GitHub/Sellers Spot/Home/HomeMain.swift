@@ -26,7 +26,10 @@ struct HomeMain: View
                         .padding()
                         .foregroundColor(.secondary)
                     
-                    TextField("Search", text: $searchTextField)
+                    TextField("Search", text: $searchTextField, onCommit:
+                                {
+                                    UIApplication.shared.endEditing()
+                                })
                         .onReceive(Just(searchTextField))
                         { (newValue: String) in
                             self.searchTextField = String(newValue.prefix(20))
