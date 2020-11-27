@@ -17,14 +17,25 @@ struct SignInView: View
     {
         VStack
         {
+            Text("Sellers Spot")
+                .font(.system(size: 30, weight: .heavy, design: .serif))
+                .fontWeight(.heavy)
+            
+            Spacer()
+                .frame(height: 300)
+            
             GoogleSignView().frame(width: 200, height: 55)
                 .shadow(radius: 10)
                 
             FacebookSignInView().frame(width: 100, height: 50)
                 .shadow(radius: 10)
-                
-                .navigationBarTitle("Sign in Page", displayMode: .inline)
+            
+            Spacer()
+                .frame(height: 200)
         }
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 20)
+        .ignoresSafeArea(.all)
+        .background(Color("AccentColor"))
     }
 }
 
@@ -33,7 +44,7 @@ struct GoogleSignView: UIViewRepresentable
     func makeUIView(context: UIViewRepresentableContext<GoogleSignView>) -> GIDSignInButton
     {
         let button = GIDSignInButton()
-        button.colorScheme = .dark
+        button.colorScheme = .light
         button.style = .wide
         GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
         return button
@@ -54,7 +65,6 @@ struct FacebookSignInView: UIViewRepresentable
     func makeUIView(context: UIViewRepresentableContext<FacebookSignInView>) -> FBLoginButton
     {
         let button = FBLoginButton()
-        button.tooltipColorStyle = .neutralGray
         button.permissions = ["public_profile","email"]
         button.delegate = context.coordinator
         return button

@@ -63,12 +63,18 @@ struct MessagesMain: View
                                             //hiding the tab bar while texting
                                             .onAppear()
                                             {
-                                                hideTabBar = true
+                                                withAnimation
+                                                {
+                                                    hideTabBar = true
+                                                }
                                             }
                                             
                                             .onDisappear()
                                             {
-                                                hideTabBar = false
+                                                withAnimation
+                                                {
+                                                    hideTabBar = false
+                                                }
                                             })
                             {
                                 MessagesListView(theirId: messageConnection[each], chatId: messageLink[each])

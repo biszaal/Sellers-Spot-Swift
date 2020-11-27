@@ -3,7 +3,7 @@ import CoreLocation
 
 class PostObserver: ObservableObject
 {
-    //@Published var posts = [PostDetails]()
+    var locationViewModel = LocationViewModel()
     
     var dateFormatter = DateFormatter()
     
@@ -50,6 +50,7 @@ class PostObserver: ObservableObject
                                                    let dislikeSnapshot = dict["postDislike"] as? NSDictionary?,
                                                    let postDislike = dislikeSnapshot?.allValues as? [String] ?? []
                                                 {
+                                                    
                                                     if childSnapshot.key != lastPost?.id
                                                     {
                                                         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -69,8 +70,9 @@ class PostObserver: ObservableObject
     // Adding post to the firebase real-time database
     func addPost(id: String, userId: String, username: String, userImage: String, postName: String, postLocation: String, postImage: [String], postDescription: String, postPrice: String)
     {
+        let userCoordinates = ["latitude" : locationViewModel.userLatitude, "longitude" : locationViewModel.userLongitude]
         let posts = Database.database().reference()
-        posts.child("posts").child(id).setValue(["userId": userId, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": postLocation ,"postDate": Date().rnDate(), "postLike": [], "postDislike": []])
+        posts.child("posts").child(id).setValue(["userId": userId, "postName": postName, "postImage": postImage, "postDescription": postDescription, "postPrice": postPrice, "postLocation": postLocation ,"userCoordinates" : userCoordinates,"postDate": Date().rnDate(), "postLike": [], "postDislike": []])
     }
     
     

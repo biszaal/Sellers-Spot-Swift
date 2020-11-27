@@ -68,7 +68,7 @@ struct CustomTabView: View
                     .clipShape(Circle())
             }
             .shadow(radius: 5, y: 3)
-            .offset(y: -20)
+            .offset(y: -15)
             
             Spacer(minLength: 0)
             
@@ -109,6 +109,7 @@ struct CustomTabView: View
         .animation(.default)
         .padding(.horizontal, 35)
         .padding(.bottom, 20)
+        .frame(height: 80)
         .background(Color(UIColor.secondarySystemBackground))
     }
 }

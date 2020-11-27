@@ -29,7 +29,7 @@ struct ContentView: View
         {
             if loggedIn
             {
-                VStack
+                VStack(spacing: 0)
                 {
                     
                     if selectedIndex == 1
@@ -67,7 +67,9 @@ struct ContentView: View
                             }
                     }
                     
-                    Spacer()
+                    Spacer(minLength: 0)
+                    
+                    Divider()
                     
                     if !hideTabBar
                     {

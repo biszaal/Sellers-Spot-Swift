@@ -21,7 +21,8 @@ struct EachPost: View
     @State var dislikePressed: Bool = false
     @State var likes: Int = 0
     @State var dislikes: Int = 0
-    
+    @State var deleteAlert: Bool = false
+    @State var reportAlert: Bool = false
     @State var postDeleted: Bool = false
     
     var post: PostDetails
@@ -66,7 +67,7 @@ struct EachPost: View
                     
                     if post.userId == myId   // if this is my post then only I can delete it
                     {
-                        Button(action: deletePost)
+                        Button(action: { self.deleteAlert = true })
                         {
                             Image(systemName: "trash.fill")
                                 .font(.headline)
@@ -77,7 +78,7 @@ struct EachPost: View
                     
                     else
                     {
-                        Button(action: reportPost)
+                        Button(action: { self.reportAlert = true })
                         {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.headline)
@@ -174,6 +175,8 @@ struct EachPost: View
                     {
                         Button(action: {
                             // when bought
+                            messageObserver.addMessage(chatId: UUID().uuidString, theirId: post.userId, message: "I am intrested to buy your product.")
+                            selectedTab = 2
                             self.productSold = true
                         })
                         {
@@ -234,7 +237,17 @@ struct EachPost: View
                     self.dislikes = post.postDislike.count
                 }
             }
+            
+            .alert(isPresented: self.$deleteAlert)
+            {
+                Alert(title: Text("Delete"), message: Text("Are you sure you want to delete the post?"), primaryButton: .destructive(Text("Delete"))
+                        {
+                    deletePost()
+                }, secondaryButton: .cancel())
+            }
+            
         }
+        
     }
     
     // MARK: Like

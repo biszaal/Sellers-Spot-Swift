@@ -53,7 +53,7 @@ class MessagesObserver: ObservableObject
         {
             let lastTimeStamp = lastMessage!.time.description
             print(lastMessage!.message)
-            queryData = db.collection("data").document("messages").collection(chatId).order(by: "time").end(at: [lastTimeStamp]).limit(toLast: 10)
+            queryData = db.collection("data").document("messages").collection(chatId).order(by: "time").end(at: [lastTimeStamp]).limit(toLast: 20)
         }
         
         queryData.addSnapshotListener

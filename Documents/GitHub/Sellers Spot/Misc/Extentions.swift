@@ -9,6 +9,11 @@ extension Date
         
         let secondsAgo = Int(Date().timeIntervalSince(self))
         
+        if (secondsAgo < 5)
+        {
+            return("now")
+        }
+        
         if (secondsAgo < 60)
         {
             return("\(secondsAgo) seconds ago")
@@ -45,9 +50,8 @@ extension Date
     func rnDate() -> String
     {
         let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        isoFormatter.timeZone = TimeZone.autoupdatingCurrent
-        isoFormatter.locale = Locale.current
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        isoFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         let date = isoFormatter.string(from: Date())
         return date
     }

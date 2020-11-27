@@ -26,7 +26,10 @@
 		61453BEC250B6200003FFE5E /* PostObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61453BEB250B6200003FFE5E /* PostObserver.swift */; };
 		6145F9A4251732E800D5784E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6145F9A3251732E800D5784E /* ImagePicker.swift */; };
 		614C9912253F67B9007E7BA5 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 614C9911253F67B9007E7BA5 /* SDWebImageSwiftUI */; };
-		614C991A253F6B57007E7BA5 /* TimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C9919253F6B57007E7BA5 /* TimeStamp.swift */; };
+		614C991A253F6B57007E7BA5 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614C9919253F6B57007E7BA5 /* Extentions.swift */; };
+		615327D7256D44B40053695B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 615327D6256D44B40053695B /* MapKit.framework */; };
+		615327EB256D53B80053695B /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615327EA256D53B80053695B /* LocationViewModel.swift */; };
+		61532817256D54B30053695B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61532815256D54B30053695B /* MapView.swift */; };
 		615DBE7E25306E320078B109 /* TextLimiter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DBE7D25306E320078B109 /* TextLimiter.swift */; };
 		615DBE94253336270078B109 /* UserDataObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DBE93253336270078B109 /* UserDataObserver.swift */; };
 		615DBEA925339DAB0078B109 /* FriendsMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DBEA825339DAB0078B109 /* FriendsMain.swift */; };
@@ -89,7 +92,10 @@
 		6127996E2515D2D300D1A8FA /* PostUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUserInfoView.swift; sourceTree = "<group>"; };
 		61453BEB250B6200003FFE5E /* PostObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostObserver.swift; sourceTree = "<group>"; };
 		6145F9A3251732E800D5784E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		614C9919253F6B57007E7BA5 /* TimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp.swift; sourceTree = "<group>"; };
+		614C9919253F6B57007E7BA5 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
+		615327D6256D44B40053695B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		615327EA256D53B80053695B /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		61532815256D54B30053695B /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		615DBE7D25306E320078B109 /* TextLimiter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLimiter.swift; sourceTree = "<group>"; };
 		615DBE93253336270078B109 /* UserDataObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataObserver.swift; sourceTree = "<group>"; };
 		615DBEA825339DAB0078B109 /* FriendsMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsMain.swift; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				614C9912253F67B9007E7BA5 /* SDWebImageSwiftUI in Frameworks */,
+				615327D7256D44B40053695B /* MapKit.framework in Frameworks */,
 				180C446071B7A65334C42A4D /* Pods_Sellers_Spot.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +150,7 @@
 		6121F0F3250A82550062503C = {
 			isa = PBXGroup;
 			children = (
+				615327E9256D52F90053695B /* Location */,
 				61F318CA254740F400CED8B2 /* Misc */,
 				615DE38C250BBE9500E59B24 /* SignIn */,
 				6121F137250A82840062503C /* Home */,
@@ -251,6 +259,15 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		615327E9256D52F90053695B /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				61532815256D54B30053695B /* MapView.swift */,
+				615327EA256D53B80053695B /* LocationViewModel.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		615DBEA725339D8D0078B109 /* Friends */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,7 +299,7 @@
 		61F318CA254740F400CED8B2 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				614C9919253F6B57007E7BA5 /* TimeStamp.swift */,
+				614C9919253F6B57007E7BA5 /* Extentions.swift */,
 				615DBE7D25306E320078B109 /* TextLimiter.swift */,
 				61649D1325441430006FB72E /* CustomTabView.swift */,
 				6145F9A3251732E800D5784E /* ImagePicker.swift */,
@@ -306,6 +323,7 @@
 		8DDAF15DE2000DC2C9173226 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				615327D6256D44B40053695B /* MapKit.framework */,
 				B16F95FE0404E0CB19E13277 /* Pods_Sellers_Spot.framework */,
 				902BD50FF1C2CF333BCD34B2 /* Pods_Sellers_Spot_Sellers_SpotUITests.framework */,
 				CEF56E83C9BCCAF6EAF970A1 /* Pods_Sellers_SpotTests.framework */,
@@ -602,12 +620,14 @@
 				6121F100250A82550062503C /* AppDelegate.swift in Sources */,
 				61A84DBD250CB49600ED1441 /* UserDetailsView.swift in Sources */,
 				6121F144250A82840062503C /* PostGroup.swift in Sources */,
+				61532817256D54B30053695B /* MapView.swift in Sources */,
 				615DBE94253336270078B109 /* UserDataObserver.swift in Sources */,
 				6121F145250A82840062503C /* EachPost.swift in Sources */,
 				6145F9A4251732E800D5784E /* ImagePicker.swift in Sources */,
 				61C16BC62543546B00882CE7 /* MessagesListView.swift in Sources */,
+				615327EB256D53B80053695B /* LocationViewModel.swift in Sources */,
 				61C16BC32543546B00882CE7 /* MessagesObserver.swift in Sources */,
-				614C991A253F6B57007E7BA5 /* TimeStamp.swift in Sources */,
+				614C991A253F6B57007E7BA5 /* Extentions.swift in Sources */,
 				615DBE7E25306E320078B109 /* TextLimiter.swift in Sources */,
 				615DE38E250BBEB800E59B24 /* SignInView.swift in Sources */,
 				61DBEBEE251A02A8008758A2 /* PostImageView.swift in Sources */,

@@ -80,7 +80,6 @@ class UserDataObserver: ObservableObject
         db.child("users").child(userId).child("messageLink").child(chatId).setValue(theirId)
         db.child("users").child(theirId).child("messageLink").child(chatId).setValue(userId)
     }
-    
 }
 
 struct UserData: Identifiable

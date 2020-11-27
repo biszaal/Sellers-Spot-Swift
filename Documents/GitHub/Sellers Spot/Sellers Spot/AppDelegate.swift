@@ -48,7 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?)
     {
  
-      if let error = error {
+      if let error = error
+      {
         
         print(error.localizedDescription)
         return
@@ -58,9 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
       let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                         accessToken: authentication.accessToken)
         
-        Auth.auth().signIn(with: credential) { (res, err) in
+        Auth.auth().signIn(with: credential)
+        { (res, err) in
             
-            if err != nil{
+            if err != nil
+            {
                 
                 print((err?.localizedDescription)!)
                 return
@@ -69,7 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate
             UserDefaults.standard.set(user.userID, forKey: "userId")
             UserDefaults.standard.set(user.profile.name, forKey: "username")
             UserDefaults.standard.set(user.profile.email, forKey: "userEmail")
-            if user.profile.hasImage{
+            if user.profile.hasImage
+            {
                 let imageUrl = signIn.currentUser.profile.imageURL(withDimension: 120)!.absoluteString
                 UserDefaults.standard.set(imageUrl, forKey: "userImage")
                 print(" image url: ", imageUrl)

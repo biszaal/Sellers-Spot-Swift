@@ -63,11 +63,6 @@ struct ChatBoxView: View
                         }
                     }
                 }
-                // when user send or recieve message scroll down
-                .onChange(of: self.messagesData)
-                { (_) in
-                    reader.scrollTo(self.messagesData.last!.id,anchor: .bottom)
-                }
                 
                 // when keyboard appear scroll
                 .onChange(of: self.keyboardOn)

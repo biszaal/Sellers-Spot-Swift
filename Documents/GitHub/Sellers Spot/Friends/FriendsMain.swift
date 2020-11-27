@@ -60,13 +60,6 @@ struct FriendsMain: View
                     Text(each.name)
                         .font(.body)
                 }
-                .onTapGesture
-                {
-                    if !messageConnection.contains(each.id)
-                    {
-                        message.addMessage(chatId: UUID().uuidString, theirId: each.id, message: "Hello")
-                    }
-                }
             }
         }
         .onAppear()
