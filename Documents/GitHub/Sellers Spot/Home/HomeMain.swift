@@ -9,6 +9,7 @@ import Combine
 
 struct HomeMain: View
 {
+    
     @Binding var selectedTab: Int
     @State var searchTextField: String = ""
     
@@ -48,9 +49,8 @@ struct HomeMain: View
             .zIndex(1)
             .padding()
             .padding(.top, (UIApplication.shared.windows.last?.safeAreaInsets.top)! - 10)
-            .background(Color("AccentColor").opacity(0.9))
+            .background(Color.primaryColor.opacity(0.9))
             .edgesIgnoringSafeArea(.top)
-            
             
             PostGroup(selectedTab: self.$selectedTab, searchTextField: self.$searchTextField)
         }

@@ -36,6 +36,7 @@
 		615DE38E250BBEB800E59B24 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DE38D250BBEB800E59B24 /* SignInView.swift */; };
 		61649D1425441430006FB72E /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61649D1325441430006FB72E /* CustomTabView.swift */; };
 		618663802511FCA0002BD453 /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186637F2511FCA0002BD453 /* NewPostView.swift */; };
+		6199E6F225A1FB9300E53876 /* GoogleAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199E6F125A1FB9300E53876 /* GoogleAdView.swift */; };
 		61A84DBD250CB49600ED1441 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A84DBC250CB49600ED1441 /* UserDetailsView.swift */; };
 		61C16BC22543546B00882CE7 /* MessagesMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C16BBD2543546B00882CE7 /* MessagesMain.swift */; };
 		61C16BC32543546B00882CE7 /* MessagesObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C16BBE2543546B00882CE7 /* MessagesObserver.swift */; };
@@ -103,6 +104,7 @@
 		61649D1325441430006FB72E /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		6186637F2511FCA0002BD453 /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
 		61957DDA255ACD4C001B18CE /* Sellers Spot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Sellers Spot.entitlements"; sourceTree = "<group>"; };
+		6199E6F125A1FB9300E53876 /* GoogleAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAdView.swift; sourceTree = "<group>"; };
 		61A84DBC250CB49600ED1441 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		61C16BBD2543546B00882CE7 /* MessagesMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesMain.swift; sourceTree = "<group>"; };
 		61C16BBE2543546B00882CE7 /* MessagesObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesObserver.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				6121F136250A82840062503C /* AccountMain.swift */,
+				61A4EED4265A79CA004E024D /* UserDetails */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -280,8 +283,6 @@
 			isa = PBXGroup;
 			children = (
 				615DE38D250BBEB800E59B24 /* SignInView.swift */,
-				61A84DBC250CB49600ED1441 /* UserDetailsView.swift */,
-				615DBE93253336270078B109 /* UserDataObserver.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -296,6 +297,15 @@
 			path = "New Post";
 			sourceTree = "<group>";
 		};
+		61A4EED4265A79CA004E024D /* UserDetails */ = {
+			isa = PBXGroup;
+			children = (
+				61A84DBC250CB49600ED1441 /* UserDetailsView.swift */,
+				615DBE93253336270078B109 /* UserDataObserver.swift */,
+			);
+			path = UserDetails;
+			sourceTree = "<group>";
+		};
 		61F318CA254740F400CED8B2 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +313,7 @@
 				615DBE7D25306E320078B109 /* TextLimiter.swift */,
 				61649D1325441430006FB72E /* CustomTabView.swift */,
 				6145F9A3251732E800D5784E /* ImagePicker.swift */,
+				6199E6F125A1FB9300E53876 /* GoogleAdView.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -339,6 +350,7 @@
 			buildConfigurationList = 6121F126250A82580062503C /* Build configuration list for PBXNativeTarget "Sellers Spot" */;
 			buildPhases = (
 				6FDC6BF821C53DD911C4A0B0 /* [CP] Check Pods Manifest.lock */,
+				09C6405207E0C6C62ED5E02B /* [CP] Prepare Artifacts */,
 				6121F0F8250A82550062503C /* Sources */,
 				6121F0F9250A82550062503C /* Frameworks */,
 				6121F0FA250A82550062503C /* Resources */,
@@ -381,6 +393,7 @@
 			buildConfigurationList = 6121F12C250A82580062503C /* Build configuration list for PBXNativeTarget "Sellers SpotUITests" */;
 			buildPhases = (
 				FC43124C3F5168ACCFF283EB /* [CP] Check Pods Manifest.lock */,
+				8CD6DA75441C528D7E50F42A /* [CP] Prepare Artifacts */,
 				6121F119250A82580062503C /* Sources */,
 				6121F11A250A82580062503C /* Frameworks */,
 				6121F11B250A82580062503C /* Resources */,
@@ -472,6 +485,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		09C6405207E0C6C62ED5E02B /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-artifacts-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-artifacts-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-artifacts.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3FB516AEA55CD30B25486F66 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -526,6 +556,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot/Pods-Sellers Spot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CD6DA75441C528D7E50F42A /* [CP] Prepare Artifacts */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-artifacts-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Prepare Artifacts";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-artifacts-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sellers Spot-Sellers SpotUITests/Pods-Sellers Spot-Sellers SpotUITests-artifacts.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AD415C35CCBDCC4CC3D17DC1 /* [CP] Embed Pods Frameworks */ = {
@@ -634,6 +681,7 @@
 				6121F102250A82550062503C /* SceneDelegate.swift in Sources */,
 				61C16BC42543546B00882CE7 /* MessageRow.swift in Sources */,
 				6121F142250A82840062503C /* AccountMain.swift in Sources */,
+				6199E6F225A1FB9300E53876 /* GoogleAdView.swift in Sources */,
 				6127996F2515D2D300D1A8FA /* PostUserInfoView.swift in Sources */,
 				6121F14C250A87360062503C /* PostDetails.swift in Sources */,
 				61C16BC22543546B00882CE7 /* MessagesMain.swift in Sources */,

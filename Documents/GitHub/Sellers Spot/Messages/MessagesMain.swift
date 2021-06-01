@@ -11,7 +11,7 @@ struct MessagesMain: View
     
     @ObservedObject var userObserver = UserDataObserver()
     @ObservedObject var messageObserver = MessagesObserver()
-
+    
     @State var messageConnection: [String] = []
     @State var messageLink: [String] = []
     @State var showEmptyText: Bool = false
@@ -23,8 +23,17 @@ struct MessagesMain: View
     {
         NavigationView
         {
-            Group
+            VStack
             {
+                ZStack
+                {
+                    GoogleAdView(bannerId: "ca-app-pub-9776815710061950/9750630263")
+                    
+                    Text("Error loading Ads")
+                }
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 15)
+                .background(Color.secondary.opacity(0.2))
+                
                 if messageConnection.isEmpty
                 {
                     if showEmptyText
@@ -86,6 +95,8 @@ struct MessagesMain: View
                         }
                     }
                 }
+                
+                Spacer(minLength: 0)
             }
             .navigationTitle("Messages")
         }

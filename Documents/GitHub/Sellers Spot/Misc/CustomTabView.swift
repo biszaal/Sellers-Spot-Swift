@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CustomTabView: View
 {
+    
     @Binding var selectedIndex: Int
     @Binding var newPostView: Bool
     
@@ -30,7 +31,7 @@ struct CustomTabView: View
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 1 ? .blue : .secondary)
+            .foregroundColor(self.selectedIndex == 1 ? .primaryColor : .secondary)
             .offset(y: self.selectedIndex == 1 ? -5 : 0)
             
             Spacer(minLength: 0)
@@ -48,7 +49,7 @@ struct CustomTabView: View
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 2 ? .blue : .secondary)
+            .foregroundColor(self.selectedIndex == 2 ? .primaryColor : .secondary)
             .offset(y: self.selectedIndex == 2 ? -5 : 0)
             
             Spacer(minLength: 0)
@@ -63,8 +64,8 @@ struct CustomTabView: View
                     .padding()
                     .frame(width: 60, height: 60)
                     .font(.system(size: 30, design: .rounded))
-                    .foregroundColor(.white)
-                    .background(Color("AccentColor"))
+                    .foregroundColor(.primary).colorInvert()
+                    .background(Color.buttonColor)
                     .clipShape(Circle())
             }
             .shadow(radius: 5, y: 3)
@@ -85,7 +86,7 @@ struct CustomTabView: View
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 3 ? .blue : .secondary)
+            .foregroundColor(self.selectedIndex == 3 ? .primaryColor : .secondary)
             .offset(y: self.selectedIndex == 3 ? -5 : 0)
             
             Spacer(minLength: 0)
@@ -103,7 +104,7 @@ struct CustomTabView: View
                         .font(.system(size: 10))
                 }
             }
-            .foregroundColor(self.selectedIndex == 4 ? .blue : .secondary)
+            .foregroundColor(self.selectedIndex == 4 ? .primaryColor : .secondary)
             .offset(y: self.selectedIndex == 4 ? -5 : 0)
         }
         .animation(.default)

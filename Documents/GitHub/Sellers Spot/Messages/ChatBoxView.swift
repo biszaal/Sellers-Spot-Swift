@@ -48,7 +48,13 @@ struct ChatBoxView: View
                     { each in
                         MessageRow(userId: each.userId, message: each.message, userImage: self.theirImage)
                             .id(each.id)
-                    }
+                    }.onChange(of: self.messagesData.count, perform:
+                                { value in
+                                        withAnimation
+                                        {
+                                            reader.scrollTo(self.messagesData.last!.id,anchor: .bottom)
+                                        }
+                    })
                     
                     .onAppear()
                     {
@@ -130,6 +136,7 @@ struct ChatBoxView: View
             if seeMore!
             {
                 self.messagesData.insert(contentsOf: messageData, at: 0)
+                
             }
             else
             {

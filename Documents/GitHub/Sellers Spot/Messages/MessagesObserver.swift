@@ -7,7 +7,7 @@ class MessagesObserver: ObservableObject
     var userObserver = UserDataObserver()
     
     
-    // get last tetx to show in the outside of chatbox
+    // get last text to show in the outside of chatbox
     func lastText(chatId: String, completionHandler: @escaping (_ message: MessagesDataType) -> ())
     {
         let db = Firestore.firestore()
@@ -23,7 +23,11 @@ class MessagesObserver: ObservableObject
                 print((err?.localizedDescription)!)
             }
             
-            for i in snap!.documentChanges
+            guard let snap = snap else {
+                return
+            }
+            
+            for i in snap.documentChanges
             {
                 if i.type == .added
                 {
@@ -66,7 +70,11 @@ class MessagesObserver: ObservableObject
                 print((err?.localizedDescription)!)
             }
             
-            for i in snap!.documentChanges
+            guard let snap = snap else {
+                return
+            }
+            
+            for i in snap.documentChanges
             {
                 if i.type == .added
                 {

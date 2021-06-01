@@ -38,25 +38,25 @@ class PostObserver: ObservableObject
                                                 if let childSnapshot = child as? DataSnapshot,
                                                    let dict = childSnapshot.value as? [String:Any],
                                                    let id = childSnapshot.key as String?,
-                                                   let userId = dict["userId"] as? String ?? "",
-                                                   let productName = dict["postName"] as? String ?? "",
-                                                   let productLocation = dict["postLocation"] as? String ?? "",
-                                                   let productImage = dict["postImage"] as? [String] ?? [],
-                                                   let productDescription = dict["postDescription"] as? String ?? "",
-                                                   let productPrice = dict["postPrice"] as? String ?? "",
-                                                   let postedDate = dict["postDate"] as? String ?? "",
+                                                   let userId = dict["userId"] as? String? ?? "",
+                                                   let productName = dict["postName"] as? String? ?? "",
+                                                   let productLocation = dict["postLocation"] as? String? ?? "",
+                                                   let productImage = dict["postImage"] as? [String]? ?? [],
+                                                   let productDescription = dict["postDescription"] as? String? ?? "",
+                                                   let productPrice = dict["postPrice"] as? String? ?? "",
+                                                   let postedDate = dict["postDate"] as? String? ?? "",
                                                    let likeSnapshot = dict["postLike"] as? NSDictionary?,
-                                                   let postLike = likeSnapshot?.allValues as? [String] ?? [],
+                                                   let postLike = likeSnapshot?.allValues as? [String]?,
                                                    let dislikeSnapshot = dict["postDislike"] as? NSDictionary?,
-                                                   let postDislike = dislikeSnapshot?.allValues as? [String] ?? []
+                                                   let postDislike = dislikeSnapshot?.allValues as? [String]?
                                                 {
                                                     
                                                     if childSnapshot.key != lastPost?.id
                                                     {
                                                         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
                                                         let postedDate = self.dateFormatter.date(from:postedDate) ?? Date()
-                                                        
-                                                        tempPosts.insert(PostDetails(id: id, userId: userId, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: Float(productPrice) ?? 0.0, postLocation: productLocation, postDate: postedDate, postLike: postLike, postDislike: postDislike), at: 0)
+
+                                                        tempPosts.insert(PostDetails(id: id, userId: userId, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: Float(productPrice) ?? 0.0, postLocation: productLocation, postDate: postedDate, postLike: postLike ?? [], postDislike: postDislike ?? []), at: 0)
                                                     }
                                                 }
                                             }

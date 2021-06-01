@@ -16,6 +16,7 @@ pod 'Firebase/Database'
 pod 'Firebase/Messaging'
 pod 'GoogleSignIn'
 pod 'FBSDKLoginKit'
+pod 'Google-Mobile-Ads-SDK'
 
 
   target 'Sellers SpotTests' do

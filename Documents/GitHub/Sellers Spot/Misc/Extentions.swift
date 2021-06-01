@@ -84,8 +84,21 @@ extension Int
     }
 }
 
-extension UIApplication {
+extension UIApplication
+{
     func endEditing() {
         sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+}
+
+extension Color
+{
+    public static var primaryColor: Color = Color("PrimaryColor")
+    
+    public static var buttonColor: Color = Color("ButtonColor")
+    
+    public static var chatSenderColor: Color = Color("SenderColor")
+    
+    public static var chatReceiverColor: Color = Color("ReceiverColor")
+    
 }

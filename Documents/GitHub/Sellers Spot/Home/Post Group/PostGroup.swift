@@ -7,13 +7,15 @@
 
 import SwiftUI
 import Foundation
+import SDWebImageSwiftUI
 
 struct PostGroup: View
 {
     @ObservedObject var postObserver = PostObserver()
     @State var posts = [PostDetails]()
-    @State var isScrolled: Bool = false
+    @State var showSeeMore: Bool = true
     @State var refresh: Refresh = Refresh(started: false, release: false)
+    @State var selectedPhoto: String = ""
     
     @Binding var selectedTab: Int
     @Binding var searchTextField: String
@@ -22,7 +24,7 @@ struct PostGroup: View
     {
         ScrollView
         {
-            VStack
+            VStack(alignment: .center)
             {
                 if posts.isEmpty
                 {
@@ -33,44 +35,51 @@ struct PostGroup: View
                 }
                 else
                 {
-                    Image(systemName: "arrow.down")
-                        .font(.system(size: 16, weight: .heavy))
-                        .foregroundColor(.black)
-                        .rotationEffect(.init(degrees: refresh.started ? 180 : 0))
-                        .offset(y: -30)
-                        .animation(.easeIn)
-                    
-                    ForEach(posts)
-                    { post in
-                        EachPost(post: post, selectedTab: self.$selectedTab)
-                    }
-                    .offset(y: 50)
-                    
-                    GeometryReader
-                    { reader -> AnyView in
-                        refreshingPage(reader: reader)
-                        
-                        if !isScrolled
-                        {
-                            // when scrolled to the bottom it will fetch and wait 2 second to let the data fetch and load
-                            // which will prevent fetching multiple copies
-                            DispatchQueue.main.async
-                            {
-                                if (reader.frame(in: .global).minY) < 600
+                    if selectedPhoto != ""
+                    {
+                            WebImage(url: URL(string: self.selectedPhoto))
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.top, 150)
+                                .onTapGesture
                                 {
-                                    batchFetching()
-                                    self.isScrolled = true
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2)
+                                    withAnimation
                                     {
-                                        self.isScrolled = false
+                                    self.selectedPhoto = ""
                                     }
                                 }
-                            }
-                        }
-                        return AnyView(Color.black.frame(width: 0, height: 0))
                     }
-                    .frame(width: 0, height: 0)
+                    else
+                    {
+                        Image(systemName: "arrow.down")
+                            .font(.system(size: 16, weight: .heavy))
+                            .foregroundColor(.black)
+                            .rotationEffect(.init(degrees: refresh.started ? 180 : 0))
+                            .offset(y: -30)
+                            .animation(.easeIn)
+                        
+                        ForEach(posts)
+                        { post in
+                            EachPost(selectedPhoto: self.$selectedPhoto, post: post, selectedTab: self.$selectedTab)
+                        }
+                        .offset(y: 50)
+                        
+                        if showSeeMore
+                        {
+                            Button(action:
+                                    {
+                                        batchFetching()
+                                    })
+                            {
+                                Text("See more...")
+                                    .font(.subheadline)
+                                    .padding()
+                                    .background(Color(UIColor.secondarySystemBackground))
+                                    .cornerRadius(30)
+                            }
+                            .padding(.top, 50)
+                        }
+                    }
                 }
             }
             Spacer(minLength: 80)   // prevent hiding behing tabbar

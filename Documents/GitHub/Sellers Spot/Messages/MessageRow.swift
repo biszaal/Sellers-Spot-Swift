@@ -22,8 +22,9 @@ struct MessageRow: View
                 
                 Text(message)
                     .padding(8)
-                    .background(Color(UIColor.systemTeal))
-                    .cornerRadius(6.0)
+                    .padding(.horizontal, 5)
+                    .background(Color.chatSenderColor)
+                    .cornerRadius(20)
                 
                 WebImage(url: URL(string: myImage))
                     .resizable()
@@ -45,8 +46,9 @@ struct MessageRow: View
                 
                 Text(message)
                     .padding(8)
-                    .background(Color(UIColor.systemGreen))
-                    .cornerRadius(6.0)
+                    .padding(.horizontal, 5)
+                    .background(Color.chatReceiverColor)
+                    .cornerRadius(20)
                 
                 Spacer()
                 

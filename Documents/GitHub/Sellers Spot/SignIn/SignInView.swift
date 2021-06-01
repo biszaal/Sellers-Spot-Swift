@@ -35,7 +35,7 @@ struct SignInView: View
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 20)
         .ignoresSafeArea(.all)
-        .background(Color("AccentColor"))
+        .background(Color.primaryColor)
     }
 }
 

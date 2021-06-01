@@ -12,6 +12,7 @@ import FirebaseDatabase
 
 struct EachPost: View
 {
+    
     @State private var myId: String = UserDefaults.standard.string(forKey: "userId") ?? ""
     
     @State var user: UserData = UserData(id: "", name: "", email: "", image: "")
@@ -24,6 +25,7 @@ struct EachPost: View
     @State var deleteAlert: Bool = false
     @State var reportAlert: Bool = false
     @State var postDeleted: Bool = false
+    @Binding var selectedPhoto: String
     
     var post: PostDetails
     @Binding var selectedTab: Int
@@ -97,6 +99,7 @@ struct EachPost: View
                 
                 Text(post.postDescription)
                     .font(.subheadline)
+                    .lineLimit(5)
                     .padding(.horizontal)
                 
                 ScrollView(.horizontal, showsIndicators: false)
@@ -111,6 +114,13 @@ struct EachPost: View
                                 .frame(width: 200, height: 200)
                                 .background(Color.secondary.colorInvert().opacity(0.5))
                                 .cornerRadius(10)
+                                .onTapGesture
+                                {
+                                    withAnimation
+                                    {
+                                    self.selectedPhoto = self.post.postImage[i] ?? ""
+                                    }
+                                }
                         }
                     }
                 }
@@ -185,7 +195,7 @@ struct EachPost: View
                                 .lineLimit(1)
                                 .frame(width: 150)
                                 .foregroundColor(.white)
-                                .background(self.productSold ? .secondary : Color("ButtonColor"))
+                                .background(self.productSold ? .secondary : Color.buttonColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .disabled(self.productSold)
@@ -203,7 +213,7 @@ struct EachPost: View
                                 .lineLimit(1)
                                 .frame(width: 150)
                                 .foregroundColor(.white)
-                                .background(self.productSold ? .secondary : Color("ButtonColor"))
+                                .background(self.productSold ? .secondary : Color.buttonColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .disabled(self.productSold)

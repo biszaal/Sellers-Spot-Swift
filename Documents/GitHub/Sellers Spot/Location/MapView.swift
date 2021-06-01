@@ -2,15 +2,18 @@ import SwiftUI
 import MapKit
 
 
-struct MapView: UIViewRepresentable {
+struct MapView: UIViewRepresentable
+{
     
     var name: String, latitude: Double, longitude: Double
     
-    func makeUIView(context: Context) -> MKMapView {
+    func makeUIView(context: Context) -> MKMapView
+    {
         MKMapView(frame: .zero)
     }
     
-    func updateUIView(_ view: MKMapView, context: Context) {
+    func updateUIView(_ view: MKMapView, context: Context)
+    {
         
         let location = CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
         
@@ -25,5 +28,4 @@ struct MapView: UIViewRepresentable {
         view.addAnnotation(annotation)
         
     }
-    
 }
