@@ -1,6 +1,6 @@
 import Foundation
 
-struct PostDetails: Identifiable, Equatable
+struct PostDetails: Identifiable
 {
     var id: String
     var userId: String
@@ -12,4 +12,12 @@ struct PostDetails: Identifiable, Equatable
     var postDate: Date
     var postLike: [String]
     var postDislike: [String]
+    var postComment: [CommentDetails]
+    var postSold: Bool
+}
+
+struct CommentDetails: Codable, Hashable
+{
+    var userId: String
+    var comment: String
 }

@@ -101,4 +101,6 @@ extension Color
     
     public static var chatReceiverColor: Color = Color("ReceiverColor")
     
+    public static var backgroundColor: Color = Color("BackgroundColor")
+    
 }

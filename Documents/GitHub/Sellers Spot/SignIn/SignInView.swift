@@ -17,25 +17,25 @@ struct SignInView: View
     {
         VStack
         {
-            Text("Sellers Spot")
-                .font(.system(size: 30, weight: .heavy, design: .serif))
-                .fontWeight(.heavy)
+            Image("banner")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200, alignment: .center)
             
-            Spacer()
-                .frame(height: 300)
+            Image("LoginImage1")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .blendMode(.multiply)
             
             GoogleSignView().frame(width: 200, height: 55)
                 .shadow(radius: 10)
                 
             FacebookSignInView().frame(width: 100, height: 50)
                 .shadow(radius: 10)
-            
-            Spacer()
-                .frame(height: 200)
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height + 20)
         .ignoresSafeArea(.all)
-        .background(Color.primaryColor)
+        .background(Color.backgroundColor)
     }
 }
 

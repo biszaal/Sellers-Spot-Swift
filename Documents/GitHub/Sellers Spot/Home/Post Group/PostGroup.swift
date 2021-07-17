@@ -104,6 +104,7 @@ struct PostGroup: View
         }
     }
     
+    
     func refreshingPage(reader: GeometryProxy)
     {
         DispatchQueue.main.async

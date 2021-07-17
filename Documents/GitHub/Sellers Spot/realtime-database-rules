@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "users": {
+      ".read": true,
+      ".write": true
+    },
+    "posts": {
+      ".indexOn": "postDate",
+      ".read": true,
+      ".write": true
+    },
+    "reportedPosts": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

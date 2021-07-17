@@ -48,15 +48,19 @@ class PostObserver: ObservableObject
                                                    let likeSnapshot = dict["postLike"] as? NSDictionary?,
                                                    let postLike = likeSnapshot?.allValues as? [String]?,
                                                    let dislikeSnapshot = dict["postDislike"] as? NSDictionary?,
-                                                   let postDislike = dislikeSnapshot?.allValues as? [String]?
+                                                   let postDislike = dislikeSnapshot?.allValues as? [String]?,
+                                                   let postSold = dict["postSold"] as? Bool?
+                                                
+                                                //  BUG NOT FETCHING THE COMMENTS (IT IS CALLING FOLDER)
                                                 {
                                                     
                                                     if childSnapshot.key != lastPost?.id
                                                     {
                                                         self.dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
                                                         let postedDate = self.dateFormatter.date(from:postedDate) ?? Date()
-
-                                                        tempPosts.insert(PostDetails(id: id, userId: userId, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: Float(productPrice) ?? 0.0, postLocation: productLocation, postDate: postedDate, postLike: postLike ?? [], postDislike: postDislike ?? []), at: 0)
+                                                        
+                                                        tempPosts.insert(PostDetails(id: id, userId: userId, postName: productName, postImage: productImage, postDescription: productDescription, postPrice: Float(productPrice) ?? 0.0, postLocation: productLocation, postDate: postedDate, postLike: postLike ?? [], postDislike: postDislike ?? [], postComment: [], postSold: postSold ?? false), at: 0)
+                                                        
                                                     }
                                                 }
                                             }
@@ -105,5 +109,10 @@ class PostObserver: ObservableObject
         }
     }
     
+    func addComment(postId: String, userId: String, comment: String)
+    {
+        let posts = Database.database().reference()
+        posts.child("posts").child(postId).child("postComments").childByAutoId().setValue(["userId": userId , "comment": comment])
+    }
     
 }
