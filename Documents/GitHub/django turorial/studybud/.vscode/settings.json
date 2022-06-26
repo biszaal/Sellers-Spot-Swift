@@ -1,0 +1,6 @@
+{
+  "docker.commands.attach": "${config:docker.dockerPath} exec -it ${containerId} ${shellCommand}",
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  }
+}
